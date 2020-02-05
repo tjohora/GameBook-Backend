@@ -10,7 +10,7 @@ public class DAO {
     {
 
         String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/gamebook";
+        String url = "jdbc:mysql://localhost:3306/projectdb";
         String username = "root2";
         String password = "password";
         Connection con = null;

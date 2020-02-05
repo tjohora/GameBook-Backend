@@ -82,6 +82,7 @@ public class UserResource {
             JSONObject obj = (JSONObject)parser.parse(content); 
             String username = (String)obj.get("username");
             String password = (String)obj.get("password");
+            
             System.out.println("User received in Get message = " + username + ", " + password);
             User u = uDAO.login(username, password);
             System.out.println(u.toString());

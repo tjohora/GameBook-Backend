@@ -14,7 +14,7 @@ import Rest.UserResource;
 public class UserRegisterTest {
     public static void main(String[] args)
     {
-        String content = "{\"username\":\"larrybar123\",\"password\":\"pass\",\"email\":\"larry@gmail.com\"}";
+        String content = "{\"username\":\"johnjoe2\",\"password\":\"pass\",\"email\":\"john@gmail.com\"}";
         UserResource ur = new UserResource();
         System.out.println(ur.register(content));
     }

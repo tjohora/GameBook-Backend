@@ -41,14 +41,14 @@ public class UserDAO extends DAO implements UserDAOInterface
             System.out.println("Number of other users with username "+ userName + " : " + count);
             if(count == 0)//rs is 0, there is no duplicates of this username, therefore:
             {
-                ps = con.prepareStatement("insert into user (userId, username, email, password, status, userType, joinDate) values (null, ?, ?, ?, 1, 1,NOW())");
+                ps = con.prepareStatement("insert into users (userId, username, password) values (null, ?, ?)");
                 ps.setString(1, userName);
                 ps.setString(2, password);
-                ps.setString(3, email);
                 ps.executeUpdate();
-                ps = con.prepareStatement("INSERT INTO userprofile (userId, email, active) VALUES ((select userId from users where username = ?), ?, 1);");
+                System.out.println("TEST");
+                ps = con.prepareStatement("INSERT INTO userprofile (userId, email, active, userType) VALUES ((select userId from users where username = ?), ?, 1, 1);");
                 ps.setString(1, userName);
-                ps.setString(1, email);
+                ps.setString(2, email);
                 ps.executeUpdate();
                 System.out.println("User has been added.");
                 flag = true;
@@ -89,18 +89,24 @@ public class UserDAO extends DAO implements UserDAOInterface
             ps.setString(2, password);
             rs = ps.executeQuery();
             int count = 0;
-            
+            int userId = 0;
             while(rs.next()){
                 count++;
+                userId = rs.getInt("userId");
             }
+            System.out.println("id:"+userId);
+            System.out.println("count:"+count);
             if(count == 1)//rs is 1, there is only one username that holds this password, therefore:
             {
-                String query2 = "SELECT userId, profileId, fname, lname, userType, email, address, dob, active FROM userprofile WHERE userName = ?";
-                ps = con.prepareStatement(query);
-                ps.setString(1, username);     
+                String query2 = "SELECT userId, profileId, userType FROM userprofile WHERE userId = ?";
+                ps = con.prepareStatement(query2);
+                ps.setInt(1, userId);
                 rs = ps.executeQuery();
-                User u = new User(rs.getInt("userId"), rs.getInt("profileId"), rs.getInt("userType"));
-                return u;
+                while(rs.next()){
+                    User u = new User(rs.getInt("userId"), rs.getInt("profileId"), rs.getInt("userType"));
+                    return u;
+                }
+                
             }
         } catch (SQLException e) {
             System.out.println("Exception occured in the login() method: " + e.getMessage());
