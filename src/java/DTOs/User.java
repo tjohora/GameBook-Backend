@@ -13,21 +13,39 @@ import java.util.Objects;
  */
 public class User {
     private int userId;
+    private int profileId;
     private String username;
-    private String email;
     private String password;
-    private int status;
+    private String fname;
+    private String lname;
     private int userType;
-    private String joinDate;
+    private int active;
+    private String email;
+    private String address;
+    private String dob;
+    //private String joinDate;
 
-    public User(int userId, String username, String email, String password, int status, int userType, String joinDate) {
+    public User(int userId, int profileId, String username, String password, String fname, String lname, int userType, int active, String email, String address, String dob) {
+        this.userId = userId;
+        this.profileId = profileId;
+        this.username = username;
+        this.password = password;
+        this.fname = fname;
+        this.lname = lname;
+        this.userType = userType;
+        this.active = active;
+        this.email = email;
+        this.address = address;
+        this.dob = dob;
+    }
+
+    public User(int userId, String username, String email, String password, int active, int userType) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.status = status;
-        this.userType = userType;
-        this.joinDate = joinDate;
+        this.active = active;
+        this.userType = userType;  
     }
     
     public User(int userId, String username, String email, int userType, String joinDate) {
@@ -35,10 +53,15 @@ public class User {
         this.username = username;
         this.email = email;
         this.userType = userType;
-        this.joinDate = joinDate;
-        this.status = 1;
+        this.active = 1;
     }
 
+    public User(int userId, int profileId, int userType) {
+        this.userId = userId;
+        this.profileId = profileId;
+        this.userType = userType;
+    }
+    
     public User() {
         
     }
@@ -75,12 +98,12 @@ public class User {
         this.password = password;
     }
 
-    public int getStatus() {
-        return status;
+    public int getActive() {
+        return active;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setActive(int status) {
+        this.active = status;
     }
 
     public int getUserType() {
@@ -91,13 +114,47 @@ public class User {
         this.userType = userType;
     }
 
-    public String getJoinDate() {
-        return joinDate;
+    public String getFname() {
+        return fname;
     }
 
-    public void setJoinDate(String joinDate) {
-        this.joinDate = joinDate;
+    public void setFname(String fname) {
+        this.fname = fname;
     }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public int getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(int profileId) {
+        this.profileId = profileId;
+    }
+    
+    
     
 
     @Override
@@ -131,8 +188,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", username=" + username + ", email=" + email + ", password=" + password + ", status=" + status + ", userType=" + userType + ", joinDate=" + joinDate + '}';
+        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", fname=" + fname + ", lname=" + lname + ", userType=" + userType + ", active=" + active + ", email=" + email + ", address=" + address + ", dob=" + dob + '}';
     }
-    
     
 }

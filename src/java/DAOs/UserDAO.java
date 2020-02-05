@@ -20,7 +20,7 @@ public class UserDAO extends DAO implements UserDAOInterface
 {
 
     @Override
-    public boolean register(User u) 
+    public boolean register(String userName, String password, String email) 
     {
         Connection con = null;
         PreparedStatement ps = null;
@@ -32,19 +32,23 @@ public class UserDAO extends DAO implements UserDAOInterface
 
             String query = "Select userName from users where userName = ?";
             ps = con.prepareStatement(query);
-            ps.setString(1, u.getUsername());
+            ps.setString(1,userName);
             rs = ps.executeQuery();
             int count = 0;
             while(rs.next()){
                 count++;
             }
-            System.out.println("Number of other users with username "+ u.getUsername() + " : " + count);
+            System.out.println("Number of other users with username "+ userName + " : " + count);
             if(count == 0)//rs is 0, there is no duplicates of this username, therefore:
             {
                 ps = con.prepareStatement("insert into user (userId, username, email, password, status, userType, joinDate) values (null, ?, ?, ?, 1, 1,NOW())");
-                ps.setString(1, u.getUsername());
-                ps.setString(2, u.getEmail());
-                ps.setString(3, u.getPassword());
+                ps.setString(1, userName);
+                ps.setString(2, password);
+                ps.setString(3, email);
+                ps.executeUpdate();
+                ps = con.prepareStatement("INSERT INTO userprofile (userId, email, active) VALUES ((select userId from users where username = ?), ?, 1);");
+                ps.setString(1, userName);
+                ps.setString(1, email);
                 ps.executeUpdate();
                 System.out.println("User has been added.");
                 flag = true;
@@ -75,12 +79,11 @@ public class UserDAO extends DAO implements UserDAOInterface
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<User> users = new ArrayList();
         try
         {
             con = getConnection();
 
-            String query = "Select userId, username, email, status, userType, joinDate from user where username = ? AND password = ? AND status = 1";
+            String query = "Select u.userId, u.username, up.active, up.userType from users u ,userprofile up where u.username = ? AND u.password = ? AND up.active = 1";
             ps = con.prepareStatement(query);
             ps.setString(1, username);     
             ps.setString(2, password);
@@ -92,8 +95,11 @@ public class UserDAO extends DAO implements UserDAOInterface
             }
             if(count == 1)//rs is 1, there is only one username that holds this password, therefore:
             {
-                rs.first();
-                User u = new User(rs.getInt("userId"), rs.getString("username"), rs.getString("email"),rs.getInt("userType"), rs.getString("joinDate"));
+                String query2 = "SELECT userId, profileId, fname, lname, userType, email, address, dob, active FROM userprofile WHERE userName = ?";
+                ps = con.prepareStatement(query);
+                ps.setString(1, username);     
+                rs = ps.executeQuery();
+                User u = new User(rs.getInt("userId"), rs.getInt("profileId"), rs.getInt("userType"));
                 return u;
             }
         } catch (SQLException e) {

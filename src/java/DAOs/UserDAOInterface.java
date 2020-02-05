@@ -12,7 +12,7 @@ import DTOs.User;
  * @author TJ
  */
 public interface UserDAOInterface {
-    public boolean register(User u);
+    public boolean register(String userName, String password, String email);
     public User login (String username, String password);
     //public String passwordRecovery(String link);
 }

@@ -60,8 +60,8 @@ public class UserResource {
     private JSONObject convertUserToJson(User u)
     {
         JSONObject jObj = new JSONObject();
-        jObj.put("username", u.getUsername());
-        jObj.put("email", u.getEmail());
+        jObj.put("userId", u.getUserId());
+        jObj.put("profileId", u.getProfileId());
         jObj.put("userType", u.getUserType());
         return jObj;
     }
@@ -85,7 +85,7 @@ public class UserResource {
             System.out.println("User received in Get message = " + username + ", " + password);
             User u = uDAO.login(username, password);
             System.out.println(u.toString());
-            if (u.getStatus() == 0){
+            if (u.getActive() == 0){
                 return "Incorrect username or password";
             }
             else
@@ -116,15 +116,14 @@ public class UserResource {
         try
         {           
             JSONParser parser = new JSONParser();
-            JSONObject obj = (JSONObject)parser.parse(jsonString);
+            JSONObject obj = (JSONObject)parser.parse(content);
             
             String userName = ((String)obj.get("username"));
             String password = ((String)obj.get("password"));
             String email = ((String)obj.get("email"));
-            if(u != null){
-                System.out.println("Task received in POST message = " + u);
+            if(!userName.isEmpty()){
                 UserDAO db = new UserDAO();
-                flag = db.register(u);
+                flag = db.register(userName, password, email);
             }
         }catch(Exception e){
             System.out.println("Exception is User POST : " + e.getMessage());
