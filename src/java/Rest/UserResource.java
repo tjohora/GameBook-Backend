@@ -87,7 +87,9 @@ public class UserResource {
             User u = uDAO.login(username, password);
             System.out.println(u.toString());
             if (u.getActive() == 0){
-                return "Incorrect username or password";
+                JSONObject jObj = new JSONObject();
+                jObj.put("error", "Incorrect username or password");
+                return jObj.toString();
             }
             else
             {
@@ -133,8 +135,4 @@ public class UserResource {
         }
         return flag;
     }
-    
-//    @POST
-//    @Path("/login")
-//    @Consumes(MediaType.TEXT_PLAIN)
 }

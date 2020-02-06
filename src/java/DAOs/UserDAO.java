@@ -98,12 +98,12 @@ public class UserDAO extends DAO implements UserDAOInterface
             System.out.println("count:"+count);
             if(count == 1)//rs is 1, there is only one username that holds this password, therefore:
             {
-                String query2 = "SELECT userId, profileId, userType FROM userprofile WHERE userId = ?";
+                String query2 = "SELECT userId, profileId, userType, active FROM userprofile WHERE userId = ?";
                 ps = con.prepareStatement(query2);
                 ps.setInt(1, userId);
                 rs = ps.executeQuery();
                 while(rs.next()){
-                    User u = new User(rs.getInt("userId"), rs.getInt("profileId"), rs.getInt("userType"));
+                    User u = new User(rs.getInt("userId"), rs.getInt("profileId"), rs.getInt("userType"), rs.getInt("active") );
                     return u;
                 }
                 

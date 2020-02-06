@@ -56,10 +56,11 @@ public class User {
         this.active = 1;
     }
 
-    public User(int userId, int profileId, int userType) {
+    public User(int userId, int profileId, int userType, int active) {
         this.userId = userId;
         this.profileId = profileId;
         this.userType = userType;
+        this.active = active;
     }
     
     public User() {
