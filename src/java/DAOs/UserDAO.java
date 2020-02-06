@@ -45,7 +45,6 @@ public class UserDAO extends DAO implements UserDAOInterface
                 ps.setString(1, userName);
                 ps.setString(2, password);
                 ps.executeUpdate();
-                System.out.println("TEST");
                 ps = con.prepareStatement("INSERT INTO userprofile (userId, email, active, userType) VALUES ((select userId from users where username = ?), ?, 1, 1);");
                 ps.setString(1, userName);
                 ps.setString(2, email);
