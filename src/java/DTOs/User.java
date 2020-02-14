@@ -15,7 +15,6 @@ public class User {
     private int userId;
     private int profileId;
     private String username;
-    private String password;
     private String fname;
     private String lname;
     private int userType;
@@ -25,11 +24,10 @@ public class User {
     private String dob;
     //private String joinDate;
 
-    public User(int userId, int profileId, String username, String password, String fname, String lname, int userType, int active, String email, String address, String dob) {
+    public User(int userId, int profileId, String username, String fname, String lname, int userType, int active, String email, String address, String dob) {
         this.userId = userId;
         this.profileId = profileId;
         this.username = username;
-        this.password = password;
         this.fname = fname;
         this.lname = lname;
         this.userType = userType;
@@ -39,11 +37,10 @@ public class User {
         this.dob = dob;
     }
 
-    public User(int userId, String username, String email, String password, int active, int userType) {
+    public User(int userId, String username, String email, int active, int userType) {
         this.userId = userId;
         this.username = username;
         this.email = email;
-        this.password = password;
         this.active = active;
         this.userType = userType;  
     }
@@ -89,14 +86,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public int getActive() {
@@ -189,7 +178,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", username=" + username + ", password=" + password + ", fname=" + fname + ", lname=" + lname + ", userType=" + userType + ", active=" + active + ", email=" + email + ", address=" + address + ", dob=" + dob + '}';
+        return "User{" + "userId=" + userId + ", username=" + username + ", fname=" + fname + ", lname=" + lname + ", userType=" + userType + ", active=" + active + ", email=" + email + ", address=" + address + ", dob=" + dob + '}';
     }
     
 }

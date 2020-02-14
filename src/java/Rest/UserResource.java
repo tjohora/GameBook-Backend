@@ -37,28 +37,23 @@ public class UserResource {
      */
     public UserResource() {
     }
-    
-    private User convertJsonStringToUser(String jsonString)
-    {
+
+    private User convertJsonStringToUser(String jsonString) {
         User u = null;
-        try
-        {
+        try {
             JSONParser parser = new JSONParser();
-            JSONObject obj = (JSONObject)parser.parse(jsonString);
+            JSONObject obj = (JSONObject) parser.parse(jsonString);
             u = new User();
-            u.setUsername((String)obj.get("username"));
-            u.setPassword((String)obj.get("password"));
-            u.setEmail((String)obj.get("email"));
-        }catch(ParseException exp)
-        {
+            u.setUsername((String) obj.get("username"));
+            u.setEmail((String) obj.get("email"));
+        } catch (ParseException exp) {
             System.out.println(exp);
             u = null;
         }
         return u;
     }
-    
-    private JSONObject convertUserToJson(User u)
-    {
+
+    private JSONObject convertUserToJson(User u) {
         JSONObject jObj = new JSONObject();
         jObj.put("userId", u.getUserId());
         jObj.put("profileId", u.getProfileId());
@@ -68,67 +63,63 @@ public class UserResource {
 
     /**
      * Retrieves representation of an instance of Rest.UserResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
     @Path("/login/{loginDetails}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String login(@PathParam("loginDetails")String content) {
-        try
-        {
+    public String login(@PathParam("loginDetails") String content) {
+        try {
             System.out.println("GET content = " + content);
             UserDAO uDAO = new UserDAO();
             JSONParser parser = new JSONParser();
-            JSONObject obj = (JSONObject)parser.parse(content); 
-            String username = (String)obj.get("username");
-            String password = (String)obj.get("password");
-            
-            System.out.println("User received in Get message = " + username + ", " + password);
-            User u = uDAO.login(username, password);
-            System.out.println(u.toString());
-            if (u.getActive() == 0){
-                JSONObject jObj = new JSONObject();
-                jObj.put("error", "Incorrect username or password");
-                return jObj.toString();
+            JSONObject obj = (JSONObject) parser.parse(content);
+            String userName = (String) obj.get("username"); 
+            String password = (String) obj.get("password");
+            if (!userName.isEmpty() || !password.isEmpty() || password.length() > 12) {
+                //System.out.println("User received in Get message = " + username + ", " + password);
+                User u = uDAO.login(userName, password);
+                System.out.println(u.toString());
+                if (u.getActive() == 0) {
+                    JSONObject jObj = new JSONObject();
+                    jObj.put("error", "Incorrect username or password");
+                    return jObj.toString();
+                } else {
+                    return convertUserToJson(u).toString();
+                }
             }
-            else
-            {
-                return convertUserToJson(u).toString();
-            }
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Exception is User GET : " + e.getMessage());
             // This exception sends error message to client
             throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
         }
+        return "Server error. Try again later";
     }
-
 
 //    @PUT
 //    @Consumes(MediaType.TEXT_PLAIN)
 //    public void putText(String content) {
 //    }
-    
     @POST
+    //@Path("/register")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public boolean register(String content)
-    {
+    public boolean register(String content) {
         boolean flag = false;
         System.out.println("POST content = " + content);
-        try
-        {           
+        try {
             JSONParser parser = new JSONParser();
-            JSONObject obj = (JSONObject)parser.parse(content);
-            
-            String userName = ((String)obj.get("username"));
-            String password = ((String)obj.get("password"));
-            String email = ((String)obj.get("email"));
-            if(!userName.isEmpty()){
+            JSONObject obj = (JSONObject) parser.parse(content);
+
+            String userName = ((String) obj.get("username"));
+            String password = ((String) obj.get("password"));
+            String email = ((String) obj.get("email"));
+            if (!userName.isEmpty() || !password.isEmpty() || !email.isEmpty()) {
                 UserDAO db = new UserDAO();
                 flag = db.register(userName, password, email);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Exception is User POST : " + e.getMessage());
             // This exception sends error message to client
             throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
