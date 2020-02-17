@@ -38,6 +38,7 @@ public class PostResource {
      */
     public PostResource() {
     }
+    //test
 
     /**
      * Retrieves representation of an instance of Rest.PostResource
@@ -99,9 +100,10 @@ public class PostResource {
         return flag;
     }
     
-//    @PUT
+//    @POST
 //    @Path("/updatePost/{postDetails")
 //    @Consumes(MediaType.TEXT_PLAIN)
+//    @Produces(MediaType.TEXT_PLAIN)
 //    public void updatePost(String content) {
 //    }
     
