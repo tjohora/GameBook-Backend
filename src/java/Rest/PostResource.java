@@ -38,13 +38,44 @@ public class PostResource {
      */
     public PostResource() {
     }
-    //test
+    
+    public static JSONObject convertPostToJson(Post p) {
+        JSONObject jObj = new JSONObject();
+        jObj.put("postId", p.getPostId());
+        jObj.put("userId", p.getUserId());
+        jObj.put("title", p.getTitle());
+        jObj.put("content" , p.getContent());
+        jObj.put("postDate", p.getPostDate());
+        return jObj;
+    }
+
+    private Post convertJsonStringToPost(String jsonString) {
+        Post p = null;
+        try
+        {
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject)parser.parse(jsonString);
+
+            p = new Post();
+            
+            p.setUserId(((Long)obj.get("userId")).intValue());
+            p.setTitle((String)obj.get(("title")));
+            p.setContent((String)obj.get(("content")));
+        }
+            catch(ParseException exp)
+        {
+            System.out.println(exp);
+            p = null;
+        }
+        return p;
+    }
 
     /**
      * Retrieves representation of an instance of Rest.PostResource
      * @return an instance of java.lang.String
      */
     @GET
+    @Path("/getPost")
     @Produces(MediaType.TEXT_PLAIN)
     public String getAllPosts() {
         PostDAO postDB = new PostDAO();
@@ -71,6 +102,18 @@ public class PostResource {
 
         return array.toJSONString();
         //return response.toJSONString();
+    }
+    
+    @GET
+    @Path("/getPost/{postId}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public void getOnePost() {
+    }
+    
+    @GET
+    @Path("/UsersPosts/{userId}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public void getPostsByUser() {
     }
 
     /**
@@ -128,36 +171,5 @@ public class PostResource {
             throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
         }
         return flag;
-    }
-
-    public static JSONObject convertPostToJson(Post p) {
-        JSONObject jObj = new JSONObject();
-        jObj.put("postId", p.getPostId());
-        jObj.put("userId", p.getUserId());
-        jObj.put("title", p.getTitle());
-        jObj.put("content" , p.getContent());
-        jObj.put("postDate", p.getPostDate());
-        return jObj;
-    }
-
-    private Post convertJsonStringToPost(String jsonString) {
-        Post p = null;
-        try
-        {
-            JSONParser parser = new JSONParser();
-            JSONObject obj = (JSONObject)parser.parse(jsonString);
-
-            p = new Post();
-            
-            p.setUserId(((Long)obj.get("userId")).intValue());
-            p.setTitle((String)obj.get(("title")));
-            p.setContent((String)obj.get(("content")));
-        }
-            catch(ParseException exp)
-        {
-            System.out.println(exp);
-            p = null;
-        }
-        return p;
     }
 }

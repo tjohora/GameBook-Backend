@@ -167,4 +167,14 @@ public class PostDAO extends DAO implements PostDAOInterface {
         }
         return flag;
     }
+
+    @Override
+    public Post getOnePost() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Post> getPostsByUser() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

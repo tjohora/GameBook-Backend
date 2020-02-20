@@ -7,6 +7,7 @@ package Rest;
 
 import DAOs.UserDAO;
 import DTOs.User;
+
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -17,9 +18,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+
+import org.json.simple.*;
+import org.json.simple.parser.*;
+
 
 /**
  * REST Web Service
@@ -58,6 +60,7 @@ public class UserResource {
         jObj.put("userId", u.getUserId());
         jObj.put("profileId", u.getProfileId());
         jObj.put("userType", u.getUserType());
+        jObj.put("error", "");
         return jObj;
     }
 
@@ -66,16 +69,17 @@ public class UserResource {
      *
      * @return an instance of java.lang.String
      */
-    @GET
-    @Path("/login/{loginDetails}")
+    @POST
+    @Path("/login")
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public String login(@PathParam("loginDetails") String content) {
+    public String login(String content) {
         try {
             System.out.println("GET content = " + content);
             UserDAO uDAO = new UserDAO();
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(content);
-            String userName = (String) obj.get("username"); 
+            String userName = (String) obj.get("userName"); 
             String password = (String) obj.get("password");
             if (!userName.isEmpty() || !password.isEmpty() || password.length() > 12) {
                 //System.out.println("User received in Get message = " + username + ", " + password);
@@ -97,12 +101,13 @@ public class UserResource {
         return "Server error. Try again later";
     }
 
-//    @PUT
-//    @Consumes(MediaType.TEXT_PLAIN)
-//    public void putText(String content) {
-//    }
+    @PUT
+    //@Consumes(MediaType.TEXT_PLAIN)
+    public void putText(String content) {
+    }
+    
     @POST
-    //@Path("/register")
+    @Path("/register")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public boolean register(String content) {
@@ -112,9 +117,10 @@ public class UserResource {
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(content);
 
-            String userName = ((String) obj.get("username"));
+            String userName = ((String) obj.get("userName"));
             String password = ((String) obj.get("password"));
             String email = ((String) obj.get("email"));
+
             if (!userName.isEmpty() || !password.isEmpty() || !email.isEmpty()) {
                 UserDAO db = new UserDAO();
                 flag = db.register(userName, password, email);

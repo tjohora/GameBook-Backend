@@ -15,6 +15,8 @@ import java.util.List;
 public interface PostDAOInterface 
 {
     public List<Post> getAllPosts();
+    public Post getOnePost();
+    public List<Post> getPostsByUser();
     public boolean makeAPost(Post p);
     public boolean deleteAPost(int postId);
     public boolean updateAPost(int postId, String title, String content);
