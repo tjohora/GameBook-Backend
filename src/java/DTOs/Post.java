@@ -14,23 +14,25 @@ import java.util.Objects;
 public class Post {
     private int postId;
     private int userId;
-    private String title;
-    private String content;
-    private int status;
+    private String postHeader;
+    private String postContent;
     private String postDate;
+    private String media;
+    private int active;
 
-    public Post(int postId, int userId, String title, String content, String postDate) {
+    public Post(int postId, int userId, String postHeader, String postContent, String postDate, String media, int active) {
         this.postId = postId;
         this.userId = userId;
-        this.title = title;
-        this.content = content;
+        this.postHeader = postHeader;
+        this.postContent = postContent;
         this.postDate = postDate;
+        this.media = media;
+        this.active = active;
     }
 
     public Post() {
         
     }
-    
 
     public int getPostId() {
         return postId;
@@ -48,20 +50,20 @@ public class Post {
         this.userId = userId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getPostHeader() {
+        return postHeader;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPostHeader(String postHeader) {
+        this.postHeader = postHeader;
     }
 
-    public String getContent() {
-        return content;
+    public String getPostContent() {
+        return postContent;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setPostContent(String postContent) {
+        this.postContent = postContent;
     }
 
     public String getPostDate() {
@@ -72,21 +74,28 @@ public class Post {
         this.postDate = postDate;
     }
 
-    public int getStatus() {
-        return status;
+    public String getMedia() {
+        return media;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setMedia(String media) {
+        this.media = media;
     }
-    
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 71 * hash + this.postId;
-        hash = 71 * hash + this.userId;
-        hash = 71 * hash + Objects.hashCode(this.title);
+        int hash = 5;
+        hash = 67 * hash + this.postId;
+        hash = 67 * hash + this.userId;
+        hash = 67 * hash + Objects.hashCode(this.postHeader);
         return hash;
     }
 
@@ -108,11 +117,19 @@ public class Post {
         if (this.userId != other.userId) {
             return false;
         }
-        if (!Objects.equals(this.title, other.title)) {
+        if (!Objects.equals(this.postHeader, other.postHeader)) {
             return false;
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Post{" + "postId=" + postId + ", userId=" + userId + ", postHeader=" + postHeader + ", postContent=" + postContent + ", postDate=" + postDate + ", media=" + media + ", active=" + active + '}';
+    }
+    
+        
+    
     
     
 }

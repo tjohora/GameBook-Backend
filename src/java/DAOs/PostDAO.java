@@ -29,13 +29,13 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try{
             con = getConnection();
 
-            String query = "Select * from post where status = 1"; 
+            String query = "Select * from post where active = 1"; 
             ps = con.prepareStatement(query);
             rs = ps.executeQuery(); 
             
             while(rs.next())
             {
-                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("title"), rs.getString("content"), rs.getString("postDate"));
+                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
                 posts.add(p);
             }
         }catch (SQLException e) {
@@ -58,6 +58,92 @@ public class PostDAO extends DAO implements PostDAOInterface {
         
         return posts;
     }
+    
+    @Override
+    public List<Post> getOnePost(int postId) 
+    {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Post> post = new ArrayList();
+        
+        try{
+            con = getConnection();
+
+            String query = "Select * from post where active = 1 && postId = ?";
+            ps.setInt(1, postId);
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery(); 
+            
+            while(rs.next())
+            {
+                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
+                post.add(p);
+            }
+        }catch (SQLException e) {
+            System.out.println("Exception occured in the getAllPosts() method: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the getAllPosts() method: " + e.getMessage());
+            }
+        }
+        
+        return post;
+    
+    }
+
+    @Override
+    public List<Post> getPostsByUser(int userID) 
+    {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Post> posts = new ArrayList();
+        
+        try{
+            con = getConnection();
+
+            String query = "Select * from post where active = 1 && userID = ?";
+            ps.setInt(1, userID);
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery(); 
+            
+            while(rs.next())
+            {
+                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
+                posts.add(p);
+            }
+        }catch (SQLException e) {
+            System.out.println("Exception occured in the getAllPosts() method: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the getAllPosts() method: " + e.getMessage());
+            }
+        }
+        
+        return posts;
+    
+    }
 
     @Override
     public boolean makeAPost(Post p) {
@@ -69,7 +155,7 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try {
             con = getConnection();
 
-            ps = con.prepareStatement("insert into post (postId, userId, title, content, postDate) values (null, ?, ?, ?, NOW())");
+            ps = con.prepareStatement("insert into post (postId, userId, postHeader, content, postDate) values (null, ?, ?, ?, NOW())");
             ps.setInt(1, p.getUserId());
             ps.setString(2, p.getTitle());
             ps.setString(3, p.getContent());
@@ -106,7 +192,7 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try
         {
             con = getConnection();         
-            ps = con.prepareStatement("UPDATE post SET status = 0 WHERE postId = ?");
+            ps = con.prepareStatement("UPDATE post SET status = 0, postHeader = '[deleted]', postContent = '[deleted]' WHERE postId = ?");
             ps.setInt(1, postId);
             ps.executeUpdate();
             System.out.println("Post has been deleted.");
@@ -141,10 +227,9 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try
         {
             con = getConnection();       
-            ps = con.prepareStatement("UPDATE post SET title = ?, content = ? WHERE = ?");
-            ps.setString(1, title);
-            ps.setString(2, content);
-            ps.setInt(3, postId);
+            ps = con.prepareStatement("UPDATE post SET content = ? WHERE postId = ?");
+            ps.setString(1, content);
+            ps.setInt(2, postId);
             ps.executeUpdate();
             System.out.println("Post has been updated.");
             flag = true;
@@ -166,15 +251,5 @@ public class PostDAO extends DAO implements PostDAOInterface {
             }
         }
         return flag;
-    }
-
-    @Override
-    public Post getOnePost() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Post> getPostsByUser() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
