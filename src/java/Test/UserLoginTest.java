@@ -15,7 +15,7 @@ import Rest.UserResource;
  */
 public class UserLoginTest {
     public static void main(String[] args) {
-        String content = "{\"username\":\"johnjoe2we\",\"password\":\"pass\"}";
+        String content = "{\"userName\":\"johnjoe2\",\"password\":\"password\"}";
         UserResource ur = new UserResource();
         System.out.println(ur.login(content));
     }

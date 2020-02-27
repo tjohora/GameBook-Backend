@@ -29,7 +29,7 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try{
             con = getConnection();
 
-            String query = "Select * from post where active = 1"; 
+            String query = "Select * from posts where active = 1"; 
             ps = con.prepareStatement(query);
             rs = ps.executeQuery(); 
             
@@ -146,7 +146,7 @@ public class PostDAO extends DAO implements PostDAOInterface {
     }
 
     @Override
-    public boolean makeAPost(Post p) {
+    public boolean makeAPost(int userId, String postHeader, String postContent) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -155,10 +155,10 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try {
             con = getConnection();
 
-            ps = con.prepareStatement("insert into post (postId, userId, postHeader, content, postDate) values (null, ?, ?, ?, NOW())");
-            ps.setInt(1, p.getUserId());
-            ps.setString(2, p.getTitle());
-            ps.setString(3, p.getContent());
+            ps = con.prepareStatement("insert into post (postID, userId, postHeader, postContent, postDate, media, active) values (null, ?, ?, ?, NOW(), ?, 1)");
+            ps.setInt(1, userId);
+            ps.setString(2, postHeader);
+            ps.setString(3, postContent);
             ps.executeUpdate();
             System.out.println("Post has been added.");
             flag = true;

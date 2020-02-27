@@ -116,6 +116,33 @@ public class PostResource {
     @Produces(MediaType.TEXT_PLAIN)
     public void getPostsByUser() {
     }
+    
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public boolean makeAPost(String content)
+    {
+        boolean flag = false;
+        System.out.println("POST content = " + content);
+        try
+        {           
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject) parser.parse(content);
+            int userId = ((Long)obj.get("userId")).intValue();
+            String postHeader = (String) obj.get("postHeader");
+            String postContent = (String) obj.get("postContent");
+            if ( postHeader != null && postContent != null) {
+                if (!postHeader.isEmpty()) {
+                PostDAO db = new PostDAO();
+                flag = db.makeAPost(userId, postHeader, postContent);
+            }}
+        }catch(Exception e){
+            System.out.println("Exception is User POST : " + e.getMessage());
+            // This exception sends error message to client
+            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
+        }
+        return flag;
+    }
 
     /**
      * PUT method for updating or creating an instance of PostResource
@@ -151,26 +178,5 @@ public class PostResource {
 //    public void updatePost(String content) {
 //    }
     
-    @POST
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.TEXT_PLAIN)
-    public boolean makeAPost(String content)
-    {
-        boolean flag = false;
-        System.out.println("POST content = " + content);
-        try
-        {           
-            Post p = convertJsonStringToPost(content);
-            if(p != null){
-                System.out.println("Post received in POST message = " + p.toString());
-                PostDAO db = new PostDAO();
-                flag = db.makeAPost(p);
-            }
-        }catch(Exception e){
-            System.out.println("Exception is User POST : " + e.getMessage());
-            // This exception sends error message to client
-            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
-        }
-        return flag;
-    }
+    
 }

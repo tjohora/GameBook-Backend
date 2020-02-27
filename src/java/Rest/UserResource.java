@@ -22,7 +22,6 @@ import javax.ws.rs.core.MediaType;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
-
 /**
  * REST Web Service
  *
@@ -79,18 +78,20 @@ public class UserResource {
             UserDAO uDAO = new UserDAO();
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(content);
-            String userName = (String) obj.get("userName"); 
+            String userName = (String) obj.get("userName");
             String password = (String) obj.get("password");
-            if (!userName.isEmpty() || !password.isEmpty() || password.length() > 12) {
-                //System.out.println("User received in Get message = " + username + ", " + password);
-                User u = uDAO.login(userName, password);
-                System.out.println(u.toString());
-                if (u.getActive() == 0) {
-                    JSONObject jObj = new JSONObject();
-                    jObj.put("error", "Incorrect username or password");
-                    return jObj.toString();
-                } else {
-                    return convertUserToJson(u).toString();
+            System.out.println(userName + " " + password);
+            if (userName != null && password != null) {
+                if (!userName.isEmpty() && !password.isEmpty() && password.length() >= 6 && password.length() <= 16) {;
+                    User u = uDAO.login(userName, password);
+                    System.out.println(u.toString());
+                    if (u.getActive() == 0) {
+                        JSONObject jObj = new JSONObject();
+                        jObj.put("error", "Incorrect username or password");
+                        return jObj.toString();
+                    } else {
+                        return convertUserToJson(u).toString();
+                    }
                 }
             }
         } catch (Exception e) {
@@ -105,7 +106,7 @@ public class UserResource {
     //@Consumes(MediaType.TEXT_PLAIN)
     public void putText(String content) {
     }
-    
+
     @POST
     @Path("/register")
     @Consumes(MediaType.TEXT_PLAIN)
@@ -121,9 +122,11 @@ public class UserResource {
             String password = ((String) obj.get("password"));
             String email = ((String) obj.get("email"));
 
-            if (!userName.isEmpty() || !password.isEmpty() || !email.isEmpty()) {
-                UserDAO db = new UserDAO();
-                flag = db.register(userName, password, email);
+            if (userName != null && password != null && email != null) {
+                if (!userName.isEmpty() && !password.isEmpty() && !email.isEmpty() && password.length() >= 6 && password.length() <= 16) {
+                    UserDAO db = new UserDAO();
+                    flag = db.register(userName, password, email);
+                }
             }
         } catch (Exception e) {
             System.out.println("Exception is User POST : " + e.getMessage());
