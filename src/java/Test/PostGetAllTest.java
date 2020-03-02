@@ -5,18 +5,15 @@
  */
 package Test;
 
-import Rest.UserResource;
+import Rest.PostResource;
 
 /**
  *
  * @author TJ
- * Test
- * erwer
  */
-public class UserLoginTest {
+public class PostGetAllTest {
     public static void main(String[] args) {
-        String content = "{\"userName\":\"johnjoe3\",\"password\":\"password\"}";
-        UserResource ur = new UserResource();
-        System.out.println(ur.login(content));
+        PostResource pr = new PostResource();
+        System.out.println(pr.getPostsByUser(11));
     }
 }

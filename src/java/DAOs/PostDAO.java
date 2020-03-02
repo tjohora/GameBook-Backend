@@ -103,7 +103,7 @@ public class PostDAO extends DAO implements PostDAOInterface {
     }
 
     @Override
-    public List<Post> getPostsByUser(int userID) 
+    public List<Post> getPostsByUser(int userId) 
     {
         Connection con = null;
         PreparedStatement ps = null;
@@ -112,11 +112,12 @@ public class PostDAO extends DAO implements PostDAOInterface {
         
         try{
             con = getConnection();
-
-            String query = "Select * from post where active = 1 && userID = ?";
-            ps.setInt(1, userID);
+            System.out.println("Test");
+            String query = "Select * from posts where active = 1 && userId = ?";
+            ps.setInt(1, userId);
             ps = con.prepareStatement(query);
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
+            
             
             while(rs.next())
             {
