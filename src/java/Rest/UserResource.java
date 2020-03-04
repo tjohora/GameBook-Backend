@@ -62,6 +62,8 @@ public class UserResource {
         jObj.put("error", "");
         return jObj;
     }
+    
+    
 
     /**
      * Retrieves representation of an instance of Rest.UserResource
@@ -75,7 +77,7 @@ public class UserResource {
     public String login(String content) {
         try {
             System.out.println("GET content = " + content);
-            UserDAO uDAO = new UserDAO();
+            UserDAO uDAO = new UserDAO("projectdb");
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(content);
             String userName = (String) obj.get("userName");
@@ -124,7 +126,7 @@ public class UserResource {
 
             if (userName != null && password != null && email != null) {
                 if (!userName.isEmpty() && !password.isEmpty() && !email.isEmpty() && password.length() >= 6 && password.length() <= 16) {
-                    UserDAO db = new UserDAO();
+                    UserDAO db = new UserDAO("projectdb");
                     flag = db.register(userName, password, email);
                 }
             }

@@ -7,6 +7,7 @@ package Rest;
 
 import DAOs.PostDAO;
 import DTOs.Post;
+import java.sql.Connection;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -71,6 +72,7 @@ public class PostResource {
 //        }
 //        return p;
 //    }
+    Connection con = null;
     /**
      * Retrieves representation of an instance of Rest.PostResource
      *
@@ -79,7 +81,7 @@ public class PostResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getAllPosts() {
-        PostDAO postDB = new PostDAO();
+        PostDAO postDB = new PostDAO("projectdb");
 
         System.out.println("GET called: getAllPosts");
 
@@ -92,7 +94,7 @@ public class PostResource {
             JSONObject response = new JSONObject();
             response.put("Posts", array);
         } catch (Exception e) {
-            System.out.println(e);
+            //e.printStackTrace();
             // This exception sends error message to client
             throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
         }
@@ -102,24 +104,22 @@ public class PostResource {
     }
 
     @GET
-    @Path("/getPost/{postId}")
+    @Path("/onePost/{postId}")
     @Produces(MediaType.TEXT_PLAIN)
     public void getOnePost() {
     }
 
     @GET
-    @Path("/{userId}")
+    @Path("/userPosts/{userId}")
     @Produces(MediaType.TEXT_PLAIN)
     public String getPostsByUser(@PathParam("userId") int userId) {
-        PostDAO postDB = new PostDAO();
+        PostDAO postDB = new PostDAO(con);
 
         System.out.println("GET called: getPostsByUser");
-
         JSONArray array = new JSONArray();
-        List<Post> posts = postDB.getPostsByUser(userId);
-        System.out.println(posts);
         try{
-            if (posts == null) 
+            List<Post> posts = postDB.getPostsByUser(userId);
+            if (posts.isEmpty()) 
             {               
                 return "{\"message\":\"No posts found\"}";
             } 
@@ -147,7 +147,7 @@ public class PostResource {
     @POST
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public boolean makeAPost(String content) {
+    public boolean makePost(String content) {
         boolean flag = false;
         System.out.println("POST content = " + content);
         try {
@@ -158,8 +158,8 @@ public class PostResource {
             String postContent = (String) obj.get("postContent");
             if (postHeader != null && postContent != null) {
                 if (!postHeader.isEmpty()) {
-                    PostDAO db = new PostDAO();
-                    flag = db.makeAPost(userId, postHeader, postContent);
+                    PostDAO db = new PostDAO("projectdb");
+                    flag = db.makePost(userId, postHeader, postContent);
                 }
             }
         } catch (Exception e) {
@@ -187,8 +187,8 @@ public class PostResource {
 //            int topicId = ((Long) obj.get("Id")).intValue();
             if (postId != -1) {
                 System.out.println("Topic received in DELETE message = " + postId);
-                PostDAO pDAO = new PostDAO();
-                flag = pDAO.deleteAPost(postId);
+                PostDAO pDAO = new PostDAO("projectdb");
+                flag = pDAO.deletePost(postId);
             }
         } catch (Exception e) {
             System.out.println("Exception is Topic DELETE : " + e.getMessage());

@@ -14,6 +14,6 @@ import Rest.PostResource;
 public class PostGetAllTest {
     public static void main(String[] args) {
         PostResource pr = new PostResource();
-        System.out.println(pr.getPostsByUser(11));
+        System.out.println(pr.getPostsByUser(8));
     }
 }

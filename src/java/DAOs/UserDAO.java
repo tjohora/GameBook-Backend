@@ -18,6 +18,15 @@ import org.mindrot.jbcrypt.BCrypt;
  * @author TJ
  */
 public class UserDAO extends DAO implements UserDAOInterface {
+    
+    public UserDAO(Connection conn){
+        super(conn);
+    }
+    
+    public UserDAO(String databaseName)
+    {
+        super(databaseName);
+    }
 
     @Override
     public boolean register(String userName, String password, String email) {

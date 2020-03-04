@@ -5,6 +5,7 @@
  */
 package DAOs;
 
+import DTOs.Comment;
 import DTOs.Post;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,38 +18,38 @@ import java.util.List;
  *
  * @author TJ
  */
-public class PostDAO extends DAO implements PostDAOInterface {
-
-    public PostDAO(Connection conn) {
+public class CommentDAO extends DAO implements CommentDAOInterface {
+    
+    public CommentDAO(Connection conn) {
         super(conn);
     }
     
-    public PostDAO(String databaseName)
+    public CommentDAO(String databaseName)
     {
         super(databaseName);
     }
 
     @Override
-    public List<Post> getAllPosts() {
+    public List<Comment> getAllComments() {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Post> posts = new ArrayList();
+        List<Comment> comments = new ArrayList();
         
         try{
             con = getConnection();
 
-            String query = "Select * from posts where active = 1"; 
+            String query = "Select * from comments where active = 1"; 
             ps = con.prepareStatement(query);
             rs = ps.executeQuery(); 
             
             while(rs.next())
             {
-                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
-                posts.add(p);
+                Comment p = new Comment(rs.getInt("userId"), rs.getInt("postID"), rs.getInt("commentID"), rs.getString("content"), rs.getString("commentDate"), rs.getInt("active"));
+                comments.add(p);
             }
         }catch (SQLException e) {
-            System.out.println("Exception occured in the getAllPosts() method: " + e.getMessage());
+            System.out.println("Exception occured in the getAllComments() method: " + e.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -61,63 +62,19 @@ public class PostDAO extends DAO implements PostDAOInterface {
                     freeConnection(con);
                 }
             } catch (SQLException e) {
-                System.out.println("Exception occured in the finally section of the getAllPosts() method: " + e.getMessage());
+                System.out.println("Exception occured in the finally section of the getAllComments() method: " + e.getMessage());
             }
         }
         
-        return posts;
-    }
-    
-    @Override
-    public List<Post> getOnePost(int postId) 
-    {
-        Connection con = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        List<Post> post = new ArrayList();
-        
-        try{
-            con = getConnection();
-
-            String query = "Select * from post where active = 1 && postId = ?";
-            ps.setInt(1, postId);
-            ps = con.prepareStatement(query);
-            rs = ps.executeQuery(); 
-            
-            while(rs.next())
-            {
-                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
-                post.add(p);
-            }
-        }catch (SQLException e) {
-            System.out.println("Exception occured in the getAllPosts() method: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    freeConnection(con);
-                }
-            } catch (SQLException e) {
-                System.out.println("Exception occured in the finally section of the getAllPosts() method: " + e.getMessage());
-            }
-        }
-        
-        return post;
-    
+        return comments;
     }
 
     @Override
-    public List<Post> getPostsByUser(int userId) 
-    {
+    public List<Comment> getCommentsOfUser(int userId) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Post> posts = new ArrayList();
+        List<Comment> comments = new ArrayList();
         
         
         try{
@@ -129,11 +86,11 @@ public class PostDAO extends DAO implements PostDAOInterface {
             
             while(rs.next())
             {
-                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
-                posts.add(p);
+                Comment p = new Comment(rs.getInt("userId"), rs.getInt("postID"), rs.getInt("commentID"), rs.getString("content"), rs.getString("commentDate"), rs.getInt("active"));
+                comments.add(p);
             }
         }catch (SQLException e) {
-            System.out.println("Exception occured in the getAllPosts() method: " + e.getMessage());
+            System.out.println("Exception occured in the getCommentsOfUser() method: " + e.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -146,16 +103,56 @@ public class PostDAO extends DAO implements PostDAOInterface {
                     freeConnection(con);
                 }
             } catch (SQLException e) {
-                System.out.println("Exception occured in the finally section of the getAllPosts() method: " + e.getMessage());
+                System.out.println("Exception occured in the finally section of the getCommentsOfUser() method: " + e.getMessage());
             }
         }
         
-        return posts;
-    
+        return comments;
     }
 
     @Override
-    public boolean makePost(int userId, String postHeader, String postContent) {
+    public List<Comment> getCommentsOfPost(int postId) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Comment> comments = new ArrayList();
+        
+        
+        try{
+            con = getConnection();
+            String query = "Select * from posts where active = 1 && postId = ?";
+            ps = con.prepareStatement(query);
+            ps.setInt(1, postId);
+            rs = ps.executeQuery();
+            
+            while(rs.next())
+            {
+                Comment p = new Comment(rs.getInt("userId"), rs.getInt("postID"), rs.getInt("commentID"), rs.getString("content"), rs.getString("commentDate"), rs.getInt("active"));
+                comments.add(p);
+            }
+        }catch (SQLException e) {
+            System.out.println("Exception occured in the getCommentsOfUser() method: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the getCommentsOfUser() method: " + e.getMessage());
+            }
+        }
+        
+        return comments;
+    }
+
+    @Override
+    public boolean makeCommment(int userId, int postId, String content) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -164,16 +161,16 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try {
             con = getConnection();
 
-            ps = con.prepareStatement("insert into post (postID, userId, postHeader, postContent, postDate, media, active) values (null, ?, ?, ?, NOW(), ?, 1)");
+            ps = con.prepareStatement("insert into post (userId, postID, commentId, content, commentDate, active) values (?, ?, null, ?, NOW(), 1)");
             ps.setInt(1, userId);
-            ps.setString(2, postHeader);
-            ps.setString(3, postContent);
+            ps.setInt(2, postId);
+            ps.setString(3, content);
             ps.executeUpdate();
             System.out.println("Post has been added.");
             flag = true;
             
         } catch (SQLException e) {
-            System.out.println("Exception occured in the makePost() method: " + e.getMessage());
+            System.out.println("Exception occured in the makeCommment() method: " + e.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -186,14 +183,14 @@ public class PostDAO extends DAO implements PostDAOInterface {
                     freeConnection(con);
                 }
             } catch (SQLException e) {
-                System.out.println("Exception occured in the finally section of the makePost() method: " + e.getMessage());
+                System.out.println("Exception occured in the finally section of the makeCommment() method: " + e.getMessage());
             }
         }
         return flag;
     }
 
     @Override
-    public boolean deletePost(int postId) {
+    public boolean deleteComment(int commentID) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -201,10 +198,10 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try
         {
             con = getConnection();         
-            ps = con.prepareStatement("UPDATE post SET status = 0, postHeader = '[deleted]', postContent = '[deleted]' WHERE postId = ?");
-            ps.setInt(1, postId);
+            ps = con.prepareStatement("UPDATE post SET status = 0, content = '[deleted]', postContent = null WHERE postId = ?");
+            ps.setInt(1, commentID);
             ps.executeUpdate();
-            System.out.println("Post has been deleted.");
+            System.out.println("Comment has been deleted.");
             flag = true;
         }catch (SQLException e) {
             System.out.println("Exception occured in the deletePost() method: " + e.getMessage());
@@ -227,23 +224,22 @@ public class PostDAO extends DAO implements PostDAOInterface {
     }
 
     @Override
-    public boolean updatePost(int postId, String title, String content) 
-    {
+    public boolean updateComment(int commentID, String content) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         boolean flag = false;       
         try
         {
-            con = getConnection();       
-            ps = con.prepareStatement("UPDATE post SET content = ? WHERE postId = ?");
+            con = getConnection();         
+            ps = con.prepareStatement("UPDATE post SET content = ? WHERE commentID = ?");
             ps.setString(1, content);
-            ps.setInt(2, postId);
+            ps.setInt(2, commentID);
             ps.executeUpdate();
-            System.out.println("Post has been updated.");
+            System.out.println("Comment has been updated.");
             flag = true;
         }catch (SQLException e) {
-            System.out.println("Exception occured in the updateAPost() method: " + e.getMessage());
+            System.out.println("Exception occured in the updateComment() method: " + e.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -256,9 +252,10 @@ public class PostDAO extends DAO implements PostDAOInterface {
                     freeConnection(con);
                 }
             } catch (SQLException e) {
-                System.out.println("Exception occured in the finally section of the updateAPost() method: " + e.getMessage());
+                System.out.println("Exception occured in the finally section of the updateComment() method: " + e.getMessage());
             }
         }
         return flag;
     }
+    
 }
