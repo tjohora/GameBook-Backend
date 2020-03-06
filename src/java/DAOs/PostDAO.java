@@ -37,14 +37,13 @@ public class PostDAO extends DAO implements PostDAOInterface {
         
         try{
             con = getConnection();
-
-            String query = "Select * from posts where active = 1"; 
+            String query = "Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active from posts p inner join users u on u.userId = p.userId where active = 1"; 
             ps = con.prepareStatement(query);
             rs = ps.executeQuery(); 
             
             while(rs.next())
             {
-                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
+                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
                 posts.add(p);
             }
         }catch (SQLException e) {
@@ -79,14 +78,14 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try{
             con = getConnection();
 
-            String query = "Select * from post where active = 1 && postId = ?";
+            String query = "Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active from posts p inner join users u on u.userId = p.userId where active = 1 && postId = ?";
             ps.setInt(1, postId);
             ps = con.prepareStatement(query);
             rs = ps.executeQuery(); 
             
             while(rs.next())
             {
-                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
+                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
                 post.add(p);
             }
         }catch (SQLException e) {
@@ -122,14 +121,14 @@ public class PostDAO extends DAO implements PostDAOInterface {
         
         try{
             con = getConnection();
-            String query = "Select * from posts where active = 1 && userId = ?";
+            String query = "Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active from posts p inner join users u on u.userId = p.userId where active = 1 && userId = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, userId);
             rs = ps.executeQuery();
             
             while(rs.next())
             {
-                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
+                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
                 posts.add(p);
             }
         }catch (SQLException e) {

@@ -45,6 +45,7 @@ public class PostResource {
         JSONObject jObj = new JSONObject();
         jObj.put("postId", p.getPostId());
         jObj.put("userId", p.getUserId());
+        jObj.put("userName", p.getUserName());
         jObj.put("postHeader", p.getPostHeader());
         jObj.put("postContent", p.getPostContent());
         jObj.put("postDate", p.getPostDate());
@@ -72,7 +73,6 @@ public class PostResource {
 //        }
 //        return p;
 //    }
-    Connection con = null;
     /**
      * Retrieves representation of an instance of Rest.PostResource
      *
@@ -113,7 +113,7 @@ public class PostResource {
     @Path("/userPosts/{userId}")
     @Produces(MediaType.TEXT_PLAIN)
     public String getPostsByUser(@PathParam("userId") int userId) {
-        PostDAO postDB = new PostDAO(con);
+        PostDAO postDB = new PostDAO("projectdb");
 
         System.out.println("GET called: getPostsByUser");
         JSONArray array = new JSONArray();
@@ -140,8 +140,6 @@ public class PostResource {
         }
 
         return array.toJSONString();
-        //return response.toJSONString();
-
     }
 
     @POST

@@ -13,14 +13,16 @@ public class Comment {
     private int userId;
     private int postID;
     private int commentID;
+    private String userName;
     private String content;
     private String commentDate;
     private int active;
 
-    public Comment(int userId, int postID, int commentID, String content, String commentDate, int active) {
+    public Comment(int userId, int postID, int commentID, String userName, String content, String commentDate, int active) {
         this.userId = userId;
         this.postID = postID;
         this.commentID = commentID;
+        this.userName = userName;
         this.content = content;
         this.commentDate = commentDate;
         this.active = active;
@@ -73,6 +75,14 @@ public class Comment {
     public void setActive(int active) {
         this.active = active;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
     
 
     @Override
@@ -110,8 +120,10 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comment{" + "userId=" + userId + ", postID=" + postID + ", commentID=" + commentID + ", content=" + content + ", commentDate=" + commentDate + ", active=" + active + '}';
+        return "Comment{" + "userId=" + userId + ", postID=" + postID + ", commentID=" + commentID + ", userName=" + userName + ", content=" + content + ", commentDate=" + commentDate + ", active=" + active + '}';
     }
+
+    
 
     
     

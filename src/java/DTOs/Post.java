@@ -14,15 +14,17 @@ import java.util.Objects;
 public class Post {
     private int postId;
     private int userId;
+    private String userName;
     private String postHeader;
     private String postContent;
     private String postDate;
     private String media;
     private int active;
 
-    public Post(int postId, int userId, String postHeader, String postContent, String postDate, String media, int active) {
+    public Post(int postId, int userId, String userName, String postHeader, String postContent, String postDate, String media, int active) {
         this.postId = postId;
         this.userId = userId;
+        this.userName = userName;
         this.postHeader = postHeader;
         this.postContent = postContent;
         this.postDate = postDate;
@@ -90,6 +92,14 @@ public class Post {
         this.active = active;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -125,11 +135,7 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" + "postId=" + postId + ", userId=" + userId + ", postHeader=" + postHeader + ", postContent=" + postContent + ", postDate=" + postDate + ", media=" + media + ", active=" + active + '}';
+        return "Post{" + "postId=" + postId + ", userId=" + userId + ", userName=" + userName + ", postHeader=" + postHeader + ", postContent=" + postContent + ", postDate=" + postDate + ", media=" + media + ", active=" + active + '}';
     }
-    
-        
-    
-    
     
 }

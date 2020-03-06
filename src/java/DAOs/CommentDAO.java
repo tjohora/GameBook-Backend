@@ -39,13 +39,13 @@ public class CommentDAO extends DAO implements CommentDAOInterface {
         try{
             con = getConnection();
 
-            String query = "Select * from comments where active = 1"; 
+            String query = "Select u.userName, c.userId, c.postID, c.commentID, c.content, c.commentDate, c.active from comments c inner join users u on u.userId = c.userId where active = 1"; 
             ps = con.prepareStatement(query);
             rs = ps.executeQuery(); 
             
             while(rs.next())
             {
-                Comment p = new Comment(rs.getInt("userId"), rs.getInt("postID"), rs.getInt("commentID"), rs.getString("content"), rs.getString("commentDate"), rs.getInt("active"));
+                Comment p = new Comment(rs.getInt("userId"), rs.getInt("postID"), rs.getInt("commentID"), rs.getString("userName"), rs.getString("content"), rs.getString("commentDate"), rs.getInt("active"));
                 comments.add(p);
             }
         }catch (SQLException e) {
@@ -79,14 +79,14 @@ public class CommentDAO extends DAO implements CommentDAOInterface {
         
         try{
             con = getConnection();
-            String query = "Select * from posts where active = 1 && userId = ?";
+            String query = "Select u.userName, c.userId, c.postID, c.commentID, c.content, c.commentDate, c.active from comments c inner join users u on u.userId = c.userId where active = 1 && userId = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, userId);
             rs = ps.executeQuery();
             
             while(rs.next())
             {
-                Comment p = new Comment(rs.getInt("userId"), rs.getInt("postID"), rs.getInt("commentID"), rs.getString("content"), rs.getString("commentDate"), rs.getInt("active"));
+                Comment p = new Comment(rs.getInt("userId"), rs.getInt("postID"), rs.getInt("commentID"), rs.getString("userName"), rs.getString("content"), rs.getString("commentDate"), rs.getInt("active"));
                 comments.add(p);
             }
         }catch (SQLException e) {
@@ -120,14 +120,14 @@ public class CommentDAO extends DAO implements CommentDAOInterface {
         
         try{
             con = getConnection();
-            String query = "Select * from posts where active = 1 && postId = ?";
+            String query = "Select u.userName, c.userId, c.postID, c.commentID, c.content, c.commentDate, c.active from comments c inner join users u on u.userId = c.userId where active = 1 &&  postId = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, postId);
             rs = ps.executeQuery();
             
             while(rs.next())
             {
-                Comment p = new Comment(rs.getInt("userId"), rs.getInt("postID"), rs.getInt("commentID"), rs.getString("content"), rs.getString("commentDate"), rs.getInt("active"));
+                Comment p = new Comment(rs.getInt("userId"), rs.getInt("postID"), rs.getInt("commentID"), rs.getString("userName"), rs.getString("content"), rs.getString("commentDate"), rs.getInt("active"));
                 comments.add(p);
             }
         }catch (SQLException e) {

@@ -5,15 +5,16 @@
  */
 package Test;
 
-import Rest.PostResource;
+import Rest.CommentsResource;
 
 /**
  *
  * @author TJ
  */
-public class PostGetAllTest {
+public class getAllComments {
     public static void main(String[] args) {
-        PostResource pr = new PostResource();
-        System.out.println(pr.getAllPosts());
+        CommentsResource cr = new CommentsResource();
+        System.out.println(cr.getAllComments());
     }
+    
 }
