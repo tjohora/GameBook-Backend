@@ -97,9 +97,11 @@ public class UserDAO extends DAO implements UserDAOInterface {
             rs = ps.executeQuery();
             int count = 0;
             int userId = 0;
+            String userName = "";
             String storedPassword = "";
             while (rs.next()) {
                 count++;
+                userName = rs.getString("userName");
                 userId = rs.getInt("userId");
                 storedPassword = rs.getString("password");
             }
@@ -113,7 +115,7 @@ public class UserDAO extends DAO implements UserDAOInterface {
                     ps.setInt(1, userId);
                     rs = ps.executeQuery();
                     while (rs.next()) {
-                        User u = new User(rs.getInt("userId"), rs.getInt("profileId"), rs.getInt("userType"), rs.getInt("active"));
+                        User u = new User(rs.getInt("userId"), rs.getInt("profileId"), rs.getInt("userType"), userName);
                         return u;
                     }
                 }

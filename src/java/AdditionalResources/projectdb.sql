@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2020 at 01:04 PM
+-- Generation Time: Mar 06, 2020 at 04:55 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -33,7 +33,8 @@ CREATE TABLE `comments` (
   `postID` int(11) NOT NULL,
   `commentID` int(11) NOT NULL,
   `content` varchar(500) DEFAULT NULL,
-  `commentDate` varchar(50) DEFAULT NULL
+  `commentDate` date DEFAULT current_timestamp(),
+  `active` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -62,16 +63,6 @@ CREATE TABLE `posts` (
   `media` varchar(500) DEFAULT NULL,
   `active` tinyint(4) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `posts`
---
-
-INSERT INTO `posts` (`postID`, `userId`, `postHeader`, `postContent`, `postDate`, `media`, `active`) VALUES
-(1, 8, 'First!', 'This is my first post!', '2020-02-26', NULL, 1),
-(2, 11, 'Second post', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel turpis nunc eget lorem dolor sed viverra ipsum. Dignissim convallis aenean et tortor at risus viverra adipiscing. Volutpat lacus laoreet non curabitur gravida arcu ac tortor. Vel risus commodo viverra maecenas accumsan lacus vel. Ornare suspendisse sed nisi lacus sed. Elementum curabitur vitae nunc sed velit dignissim sodales. Purus semper eget duis at tellus at. Lectus nulla at volutpat diam ut. Montes nascetur ridiculus mus mauris.', '2020-02-26', NULL, 1),
-(3, 11, 'Lorem', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel turpis nunc eget lorem dolor sed viverra ipsum. Dignissim convallis aenean et tortor at risus viverra adipiscing. Volutpat lacus laoreet non curabitur gravida arcu ac tortor. Vel risus commodo viverra maecenas accumsan lacus vel. Ornare suspendisse sed nisi lacus sed. Elementum curabitur vitae nunc sed velit dignissim sodales. Purus semper eget duis at tellus at. Lectus nulla at volutpat diam ut. Montes nascetur ridiculus mus mauris.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel turpis nunc eget lorem dolor sed viverra ipsum. Dignissim convallis aenean et tortor at risus viverra adipiscing. Volutpat lacus laoreet non curabitur gravida arcu ac tortor. Vel risus commodo viverra maecenas accumsan lacus vel. Ornare suspendisse sed nisi lacus sed. Elementum curabitur vitae nunc sed vel', '2020-02-23', NULL, 1),
-(4, 8, 'Ipsum', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis elementum nibh tellus molestie nunc. Tincidunt arcu non sodales neque sodales. Vulputate mi sit amet mauris commodo quis imperdiet massa tincidunt. Morbi tincidunt ornare massa eget. Erat velit scelerisque in dictum non consectetur a erat. Id eu nisl nunc mi ipsum faucibus vitae. Vel pretium lectus quam id leo in vitae turpis. Accumsan lacus vel facilisis volutpat. Posuere lorem ipsum dolor sit amet consectetur adipiscing. Commodo viverra maecenas accumsan lacus vel facilisis volutpat. Erat pellentesque adipiscing commodo elit. Donec massa sapien faucibus et molestie ac. Ultrices eros in cursus turpis massa tincidunt dui ut ornare. Gravida neque convallis a cras semper. Quisque sagittis purus sit amet volutpat consequat mauris nunc congue. Vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt.', '2020-02-29', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -107,9 +98,8 @@ CREATE TABLE `userprofile` (
 --
 
 INSERT INTO `userprofile` (`userId`, `profileId`, `fname`, `lname`, `userType`, `address`, `dob`, `active`) VALUES
-(8, 8, NULL, NULL, 1, NULL, NULL, 1),
-(11, 9, NULL, NULL, 1, NULL, NULL, 1),
-(17, 15, NULL, NULL, 1, NULL, NULL, 1);
+(25, 23, NULL, NULL, 1, NULL, NULL, 1),
+(26, 24, NULL, NULL, 1, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -129,9 +119,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userId`, `userName`, `email`, `password`) VALUES
-(8, 'johnjoe2', 'john@gmail.com', '$2a$13$byiQQWn4346ujXfV0WbyAOtW.hjkTTlye85S0qvl.JDLeYercKxAq'),
-(11, 'johnjoe23', 'john23@gmail.com', '$2a$13$CM5jAcXx1/zOKksgSMdB6.vx7Yftrhw9lEAUsUrFuZQFpflBUo.o.'),
-(17, 'qwerty', 'johnqwe3@gmail.com', '$2a$13$/qgyC90xhOJW1XZd8e3J/us/70DAPMkfUYCEajXPXZPiYXRoivZ1W');
+(25, 'tjohora', 'test@gmail.com', '$2a$13$yWMuwes6MM8RVLe0QYJo6uRLHnCllPuItU7A8XHfgz61OAKTjO/zu'),
+(26, 'qweqwe', 'qweqwe@example.com', '$2a$13$mENFs/aEX/VKgPK0ogqjCORDo72y8w98iLv1TjSfBmFLAX16qN0rO');
 
 --
 -- Indexes for dumped tables
@@ -188,7 +177,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -200,13 +189,13 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `userprofile`
 --
 ALTER TABLE `userprofile`
-  MODIFY `profileId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `profileId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- Constraints for dumped tables

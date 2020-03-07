@@ -17,7 +17,7 @@ public interface PostDAOInterface
     public List<Post> getAllPosts();
     public List<Post> getOnePost(int postId);
     public List<Post> getPostsByUser(int userID);
-    public boolean makePost(int userId, String postHeader, String postContent);
+    public boolean makePost(int userId, String postHeader, String postContent, int media);
     public boolean deletePost(int postId);
     public boolean updatePost(int postId, String title, String content);
 }

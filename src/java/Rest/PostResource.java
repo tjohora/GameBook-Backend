@@ -152,12 +152,13 @@ public class PostResource {
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(content);
             int userId = ((Long) obj.get("userId")).intValue();
+            int media = ((Long) obj.get("media")).intValue();
             String postHeader = (String) obj.get("postHeader");
             String postContent = (String) obj.get("postContent");
             if (postHeader != null && postContent != null) {
                 if (!postHeader.isEmpty()) {
                     PostDAO db = new PostDAO("projectdb");
-                    flag = db.makePost(userId, postHeader, postContent);
+                    flag = db.makePost(userId, postHeader, postContent, media);
                 }
             }
         } catch (Exception e) {

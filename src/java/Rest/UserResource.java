@@ -59,6 +59,7 @@ public class UserResource {
         jObj.put("userId", u.getUserId());
         jObj.put("profileId", u.getProfileId());
         jObj.put("userType", u.getUserType());
+        jObj.put("userName", u.getUsername());
         jObj.put("error", "");
         return jObj;
     }
@@ -87,7 +88,7 @@ public class UserResource {
                 if (!userName.isEmpty() && !password.isEmpty() && password.length() >= 6 && password.length() <= 16) {;
                     User u = uDAO.login(userName, password);
                     System.out.println(u.toString());
-                    if (u.getActive() == 0) {
+                    if (u.getUserType() == 0) {
                         JSONObject jObj = new JSONObject();
                         jObj.put("error", "Incorrect username or password");
                         return jObj.toString();

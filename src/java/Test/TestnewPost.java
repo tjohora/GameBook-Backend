@@ -5,18 +5,17 @@
  */
 package Test;
 
-import Rest.UserResource;
+import Rest.PostResource;
 
 /**
  *
  * @author TJ
  */
-public class UserRegisterTest {
+public class TestnewPost {
     public static void main(String[] args)
     {
-        String content = "{\"userName\":\"johnjoe123\",\"password\":\"password\",\"email\":\"johnJoe@gmail.com\"}";
-        UserResource ur = new UserResource();
-        System.out.println(ur.register(content));
+        String content = "{\"userId\":25,\"postHeader\":\"I posted this\",\"postContent\":\"From the form\",\"media\":1}";
+        PostResource ur = new PostResource();
+        System.out.println(ur.makePost(content));
     }
-    
 }
