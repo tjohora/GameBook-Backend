@@ -77,10 +77,11 @@ public class PostDAO extends DAO implements PostDAOInterface {
         
         try{
             con = getConnection();
+ 
 
             String query = "Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active from posts p inner join users u on u.userId = p.userId where active = 1 && postId = ?";
-            ps.setInt(1, postId);
             ps = con.prepareStatement(query);
+            ps.setInt(1, postId);
             rs = ps.executeQuery(); 
             
             while(rs.next())

@@ -106,7 +106,26 @@ public class PostResource {
     @GET
     @Path("/onePost/{postId}")
     @Produces(MediaType.TEXT_PLAIN)
-    public void getOnePost() {
+    public String getOnePost(@PathParam("postId") int postId) {
+        
+        PostDAO postDB = new PostDAO("projectdb");
+
+        System.out.println("GET called: getOnePosts");
+        JSONArray array = new JSONArray();
+        try {
+            for (Post p : postDB.getOnePost(postId)) {
+                JSONObject obj = convertPostToJson(p);
+                array.add(obj);
+            }
+            JSONObject response = new JSONObject();
+            response.put("Posts", array);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            // This exception sends error message to client
+            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
+        }
+
+        return array.toJSONString();
     }
 
     @GET

@@ -47,7 +47,7 @@ public class CommentsResource {
         jObj.put("commentID", c.getCommentID());
         jObj.put("userName", c.getUserName());
         jObj.put("content", c.getContent());
-        jObj.put("commnetDate", c.getCommentDate());
+        jObj.put("commentDate", c.getCommentDate());
         jObj.put("active", c.getActive());
 
         return jObj;    
@@ -81,7 +81,7 @@ public class CommentsResource {
         return array.toJSONString();
     }
     @GET
-    @Path("/userComments/{userId}")
+    @Path("/commentsOfUser/{userId}")
     @Produces(MediaType.TEXT_PLAIN)
     public String getCommentsOfUser(@PathParam("userId") int userId) {
         CommentDAO commentDB = new CommentDAO("projectdb");
@@ -114,7 +114,7 @@ public class CommentsResource {
     }
     
     @GET
-    @Path("/postComments/{postId}")
+    @Path("/commentsOfPost/{postId}")
     @Produces(MediaType.TEXT_PLAIN)
     public String getCommentsOfPost(@PathParam("postId") int postId) {
         CommentDAO commentDB = new CommentDAO("projectdb");
@@ -156,16 +156,17 @@ public class CommentsResource {
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(content);
             int userId = ((Long) obj.get("userId")).intValue();
-            int postID = ((Long) obj.get("postID")).intValue();
+            int postID = ((Long) obj.get("postId")).intValue();
             String commentContent = (String) obj.get("content");
             if (commentContent != null) {
                 if (!commentContent.isEmpty()) {
+                    
                     CommentDAO db = new CommentDAO("projectdb");
                     flag = db.makeCommment(userId, postID, commentContent);
                 }
             }
         } catch (Exception e) {
-            System.out.println("Exception is User POST : " + e.getMessage());
+            System.out.println("Exception is Comment POST : " + e.getMessage());
             // This exception sends error message to client
             throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
         }

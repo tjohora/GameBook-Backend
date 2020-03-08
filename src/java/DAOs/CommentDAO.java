@@ -120,7 +120,7 @@ public class CommentDAO extends DAO implements CommentDAOInterface {
         
         try{
             con = getConnection();
-            String query = "Select u.userName, c.userId, c.postID, c.commentID, c.content, c.commentDate, c.active from comments c inner join users u on u.userId = c.userId where active = 1 &&  postId = ?";
+            String query = "Select u.userName, c.userId, c.postID, c.commentID, c.content, c.commentDate, c.active from comments c inner join users u on u.userId = c.userId where active = 1 &&  postId = ? order by commentID desc";
             ps = con.prepareStatement(query);
             ps.setInt(1, postId);
             rs = ps.executeQuery();
@@ -161,12 +161,12 @@ public class CommentDAO extends DAO implements CommentDAOInterface {
         try {
             con = getConnection();
 
-            ps = con.prepareStatement("insert into post (userId, postID, commentId, content, commentDate, active) values (?, ?, null, ?, NOW(), 1)");
+            ps = con.prepareStatement("insert into comments (userId, postID, commentId, content, commentDate, active) values (?, ?, null, ?, NOW(), 1)");
             ps.setInt(1, userId);
             ps.setInt(2, postId);
             ps.setString(3, content);
             ps.executeUpdate();
-            System.out.println("Post has been added.");
+            System.out.println("Comment has been added.");
             flag = true;
             
         } catch (SQLException e) {
