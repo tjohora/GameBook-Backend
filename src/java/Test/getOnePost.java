@@ -14,6 +14,6 @@ import Rest.PostResource;
 public class getOnePost {
     public static void main(String[] args) {
         PostResource pr = new PostResource();
-        System.out.println(pr.getOnePost(11));
+        System.out.println(pr.getOnePost(121));
     }
 }

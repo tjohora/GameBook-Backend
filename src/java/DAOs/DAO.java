@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class DAO {
 
-    private String databaseName = "projectdb";
+    private String databaseName;
     private Connection con;
 
     public DAO(Connection con) {
