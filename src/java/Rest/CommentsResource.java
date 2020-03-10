@@ -178,10 +178,20 @@ public class CommentsResource {
      * @param content representation for the resource
      */
     @PUT
-    @Path("/deleteComment")
+    @Path("/deleteComment/{commentId}")
     @Consumes(MediaType.TEXT_PLAIN)
-    public boolean deleteComment(String content) {
-        throw new UnsupportedOperationException();
+    public boolean deleteComment(@PathParam("commentId") int commentId) {
+        System.out.println("'DELETE' content = " + commentId);
+        boolean flag = false;
+        try {
+                CommentDAO cDAO = new CommentDAO("projectdb");
+                flag = cDAO.deleteComment(commentId);
+        } catch (Exception e) {
+            System.out.println("Exception is Post DELETE : " + e.getMessage());
+            // This exception sends error message to client
+            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
+        }
+        return flag;
     }
     
     @PUT

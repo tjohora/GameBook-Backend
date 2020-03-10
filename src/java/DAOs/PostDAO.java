@@ -202,7 +202,7 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try
         {
             con = getConnection();         
-            ps = con.prepareStatement("UPDATE post SET status = 0, postHeader = '[deleted]', postContent = '[deleted]' WHERE postId = ?");
+            ps = con.prepareStatement("UPDATE posts SET active = 0, postHeader = '[deleted]', postContent = '[deleted]' WHERE postId = ?");
             ps.setInt(1, postId);
             ps.executeUpdate();
             System.out.println("Post has been deleted.");
@@ -237,7 +237,7 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try
         {
             con = getConnection();       
-            ps = con.prepareStatement("UPDATE post SET content = ? WHERE postId = ?");
+            ps = con.prepareStatement("UPDATE posts SET content = ? WHERE postId = ?");
             ps.setString(1, content);
             ps.setInt(2, postId);
             ps.executeUpdate();

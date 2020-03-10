@@ -196,20 +196,14 @@ public class PostResource {
     @PUT
     @Path("/deletePost/{postId}")
     @Consumes(MediaType.TEXT_PLAIN)
-    public boolean deletePost(@PathParam("loginDetails") int postId) {
+    public boolean deletePost(@PathParam("postId") int postId) {
         System.out.println("'DELETE' content = " + postId);
         boolean flag = false;
         try {
-//            JSONParser parser = new JSONParser();
-//            JSONObject obj = (JSONObject) parser.parse(postId);
-//            int topicId = ((Long) obj.get("Id")).intValue();
-            if (postId != -1) {
-                System.out.println("Topic received in DELETE message = " + postId);
                 PostDAO pDAO = new PostDAO("projectdb");
                 flag = pDAO.deletePost(postId);
-            }
         } catch (Exception e) {
-            System.out.println("Exception is Topic DELETE : " + e.getMessage());
+            System.out.println("Exception is Post DELETE : " + e.getMessage());
             // This exception sends error message to client
             throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
         }
