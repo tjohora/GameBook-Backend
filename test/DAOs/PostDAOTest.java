@@ -49,11 +49,15 @@ public class PostDAOTest {
     @Test
     public void getAllPosts_returnAllResults_getThreeReturns() throws SQLException
     {
+        // Create expected results
         Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1);
         Post p2 = new Post(2, 11, "userName2" ,"MyTitle2", "PostHeader2", "11/1/2020", "This is media2", 1);
         Post p3 = new Post(3, 12, "userName3" ,"MyTitle3", "PostHeader3", "11/1/2020", "This is media3", 1);
         ArrayList<Post> expectedResult = new ArrayList();
         expectedResult.add(p1);
+        expectedResult.add(p2);
+        expectedResult.add(p3);
+        
         
         //Create Mock objects
         Connection mockDBcon = mock(Connection.class);
@@ -78,7 +82,7 @@ public class PostDAOTest {
         int numPosts = 3;      
         PostDAO pd = new PostDAO(mockDBcon); 
         List<Post> result = pd.getAllPosts();
-        assertEquals(numPosts, result.size());
+        assertEquals(expectedResult, result);
         //System.out.println(result);
     }
     
@@ -111,22 +115,23 @@ public class PostDAOTest {
         when(mockRs.getString("postDate")).thenReturn(p1.getPostDate(), p2.getPostDate(), p3.getPostDate());
         when(mockRs.getString("media")).thenReturn(p1.getMedia(), p2.getMedia(), p3.getMedia());
         when(mockRs.getInt("active")).thenReturn(p1.getActive(), p2.getActive(), p3.getActive());
-        
-        int numPosts = 2;      
+            
         PostDAO pd = new PostDAO(mockDBcon); 
         List<Post> result = pd.getAllPosts();
-        assertEquals(numPosts, result.size());
+        assertEquals(expectedResult, result);
         //System.out.println(result);
     }
+    
+    /**
+     * Test of getOnePost method, of class PostDAO.
+     */
     
     @Test
     public void getOnePost_postIdExists_ReturnCorrectPost() throws SQLException
     {
         Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1);
-        Post p2 = new Post(2, 11, "userName2" ,"MyTitle2", "PostHeader2", "11/1/2020", "This is media2", 1);
-        Post p3 = new Post(3, 12, "userName3" ,"MyTitle3", "PostHeader3", "11/1/2020", "This is media3", 1);
         ArrayList<Post> expectedResult = new ArrayList();
-        expectedResult.add(p2);
+        expectedResult.add(p1);
         
         //Create Mock objects
         Connection mockDBcon = mock(Connection.class);
@@ -139,27 +144,24 @@ public class PostDAOTest {
         when(mockRs.next()).thenReturn(true, false);
         
         //Fill in Result Set
-        when(mockRs.getInt("postId")).thenReturn(p2.getPostId());
-        when(mockRs.getInt("userId")).thenReturn(p2.getUserId());
-        when(mockRs.getString("userName")).thenReturn(p2.getUserName());
-        when(mockRs.getString("postHeader")).thenReturn(p2.getPostHeader());
-        when(mockRs.getString("postContent")).thenReturn(p2.getPostContent());
-        when(mockRs.getString("postDate")).thenReturn(p2.getPostDate());
-        when(mockRs.getString("media")).thenReturn(p2.getMedia());
-        when(mockRs.getInt("active")).thenReturn(p2.getActive());
+        when(mockRs.getInt("postId")).thenReturn(p1.getPostId());
+        when(mockRs.getInt("userId")).thenReturn(p1.getUserId());
+        when(mockRs.getString("userName")).thenReturn(p1.getUserName());
+        when(mockRs.getString("postHeader")).thenReturn(p1.getPostHeader());
+        when(mockRs.getString("postContent")).thenReturn(p1.getPostContent());
+        when(mockRs.getString("postDate")).thenReturn(p1.getPostDate());
+        when(mockRs.getString("media")).thenReturn(p1.getMedia());
+        when(mockRs.getInt("active")).thenReturn(p1.getActive());
            
         PostDAO pd = new PostDAO(mockDBcon); 
-        List<Post> result = pd.getOnePost(2);
+        List<Post> result = pd.getOnePost(1);
         assertEquals(expectedResult, result);
-        System.out.println(result);
     }
     
     @Test
-    public void getOnePost_PostIdDoesNotExist_ReturnCorrectPost() throws SQLException
+    public void getOnePost_PostIdDoesNotExist_ReturnEmptyArray() throws SQLException
     {
-        Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1);
-        Post p2 = new Post(2, 11, "userName2" ,"MyTitle2", "PostHeader2", "11/1/2020", "This is media2", 1);
-        Post p3 = new Post(3, 12, "userName3" ,"MyTitle3", "PostHeader3", "11/1/2020", "This is media3", 1);
+        
         ArrayList<Post> expectedResult = new ArrayList();
         
         //Create Mock objects
@@ -172,106 +174,148 @@ public class PostDAOTest {
         when(mockPs.executeQuery()).thenReturn(mockRs);
            
         PostDAO pd = new PostDAO(mockDBcon); 
-        List<Post> result = pd.getOnePost(2);
+        List<Post> result = pd.getOnePost(-1);
         assertEquals(expectedResult, result);
-        System.out.println(result);
+    }
+
+
+    /**
+     * Test of getPostsByUser method, of class PostDAO.
+     */
+    @Test
+    public void GetPostsByUser_UserIdExists_GetOneResult() throws SQLException {
+        System.out.println("getPostsByUser");
+        
+        int userId = -1;
+        Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1);
+        ArrayList<Post> expectedResult = new ArrayList();
+        expectedResult.add(p1);
+        
+        Connection dbConn = mock(Connection.class);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        ResultSet rs = mock(ResultSet.class);
+        
+        when(dbConn.prepareStatement("Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active from posts p inner join users u on u.userId = p.userId where active = 1 && userId = ?")).thenReturn(ps);
+        when(ps.executeQuery()).thenReturn(rs);
+        
+        when(rs.next()).thenReturn(true, false);
+        
+        when(rs.getInt("postId")).thenReturn(p1.getPostId());
+        when(rs.getInt("userId")).thenReturn(p1.getUserId());
+        when(rs.getString("userName")).thenReturn(p1.getUserName());
+        when(rs.getString("postHeader")).thenReturn(p1.getPostHeader());
+        when(rs.getString("postContent")).thenReturn(p1.getPostContent());
+        when(rs.getString("postDate")).thenReturn(p1.getPostDate());
+        when(rs.getString("media")).thenReturn(p1.getMedia());
+        when(rs.getInt("active")).thenReturn(p1.getActive());
+        
+        PostDAO pd = new PostDAO(dbConn);
+        List<Post> result = pd.getPostsByUser(userId);
+        assertEquals(expectedResult, result);
+    }
+    
+    @Test
+    public void GetPostsByUser_UserIdDoesNotExists_ReturnEmptyArray() throws SQLException {
+        ArrayList<Post> expectedResult = new ArrayList();
+        
+        //Create Mock objects
+        Connection mockDBcon = mock(Connection.class);
+        PreparedStatement mockPs = mock(PreparedStatement.class);
+        ResultSet mockRs = mock(ResultSet.class);
+        
+        //Populate the mocks
+        when(mockDBcon.prepareStatement("Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active from posts p inner join users u on u.userId = p.userId where active = 1 && userId = ?")).thenReturn(mockPs);
+        when(mockPs.executeQuery()).thenReturn(mockRs);
+           
+        PostDAO pd = new PostDAO(mockDBcon); 
+        List<Post> result = pd.getPostsByUser(-1);
+        assertEquals(expectedResult, result);
     }
 
     /**
-     * Test of getAllPosts method, of class PostDAO.
+     * Test of makePost method, of class PostDAO.
      */
-//    @Test
-//    public void testGetAllPosts() {
-//        System.out.println("getAllPosts");
-//        PostDAO instance = null;
-//        List<Post> expResult = null;
-//        List<Post> result = instance.getAllPosts();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getOnePost method, of class PostDAO.
-//     */
-//    @Test
-//    public void testGetOnePost() {
-//        System.out.println("getOnePost");
-//        int postId = 0;
-//        PostDAO instance = null;
-//        List<Post> expResult = null;
-//        List<Post> result = instance.getOnePost(postId);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getPostsByUser method, of class PostDAO.
-//     */
-//    @Test
-//    public void testGetPostsByUser() {
-//        System.out.println("getPostsByUser");
-//        int userId = 0;
-//        PostDAO instance = null;
-//        List<Post> expResult = null;
-//        List<Post> result = instance.getPostsByUser(userId);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of makePost method, of class PostDAO.
-//     */
-//    @Test
-//    public void testMakePost() {
-//        System.out.println("makePost");
-//        int userId = 0;
-//        String postHeader = "";
-//        String postContent = "";
-//        int media = 0;
-//        PostDAO instance = null;
-//        boolean expResult = false;
-//        boolean result = instance.makePost(userId, postHeader, postContent, media);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of deletePost method, of class PostDAO.
-//     */
-//    @Test
-//    public void testDeletePost() {
-//        System.out.println("deletePost");
-//        int postId = 0;
-//        PostDAO instance = null;
-//        boolean expResult = false;
-//        boolean result = instance.deletePost(postId);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of updatePost method, of class PostDAO.
-//     */
-//    @Test
-//    public void testUpdatePost() {
-//        System.out.println("updatePost");
-//        int postId = 0;
-//        String title = "";
-//        String content = "";
-//        PostDAO instance = null;
-//        boolean expResult = false;
-//        boolean result = instance.updatePost(postId, title, content);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    @Test
+    public void makePost_AllDetailsProvided_ReturnTrue() throws SQLException  {
+        
+        boolean expResult = true;
+        Connection dbConn = mock(Connection.class);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        ResultSet rs = mock(ResultSet.class);
+        
+        when(dbConn.prepareStatement("insert into posts (postID, userId, postHeader, postContent, postDate, media, active) values (null, ?, ?, ?, NOW(), ?, 1)")).thenReturn(ps);
+
+        int userId = 10;
+        String postHeader = "Header1";
+        String postContent = "Content1";
+        int media = 1;
+        
+        PostDAO pd = new PostDAO(dbConn); 
+        boolean result = pd.makePost(userId, postHeader, postContent, media);
+        assertEquals(expResult, result);
+    }
     
+    @Test
+    public void makePost_MissingDetails_ReturnTrue() throws SQLException  {
+        
+        boolean expResult = true;
+        Connection dbConn = mock(Connection.class);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        ResultSet rs = mock(ResultSet.class);
+        
+        when(dbConn.prepareStatement("insert into posts (postID, userId, postHeader, postContent, postDate, media, active) values (null, ?, ?, ?, NOW(), ?, 1)")).thenReturn(ps);
+
+        int userId = 1;
+        String postHeader = "";
+        String postContent = null;
+        int media = 1;
+        
+        PostDAO pd = new PostDAO(dbConn); 
+        boolean result = pd.makePost(userId, postHeader, postContent, media);
+        assertEquals(expResult, result);
+    }
     
 
+    /**
+     * Test of deletePost method, of class PostDAO.
+     */
+    @Test
+    public void DeletePost_PostIdProvided_ReturnTrue() throws SQLException {
+        
+        boolean expResult = true;
+        Connection dbConn = mock(Connection.class);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        ResultSet rs = mock(ResultSet.class);
+        
+        when(dbConn.prepareStatement("UPDATE post SET status = 0, postHeader = '[deleted]', postContent = '[deleted]' WHERE postId = ?")).thenReturn(ps);
+
+        int postId = 1;
+        
+        PostDAO pd = new PostDAO(dbConn); 
+        boolean result = pd.deletePost(postId);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of updatePost method, of class PostDAO.
+     */
+    @Test
+    public void updatePost_DetailsProvided_ReturnTrue() throws SQLException  {
+        
+        boolean expResult = true;
+        Connection dbConn = mock(Connection.class);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        ResultSet rs = mock(ResultSet.class);
+        
+        when(dbConn.prepareStatement("UPDATE post SET content = ? WHERE postId = ?")).thenReturn(ps);
+
+        int postId = 1;
+        String title = "newTitle";
+        String content = "newContent";
+        
+        PostDAO pd = new PostDAO(dbConn); 
+        boolean result = pd.updatePost(postId, title, content);
+        assertEquals(expResult, result);
+    }
 
 }

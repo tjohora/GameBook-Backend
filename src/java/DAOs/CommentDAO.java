@@ -152,7 +152,7 @@ public class CommentDAO extends DAO implements CommentDAOInterface {
     }
 
     @Override
-    public boolean makeCommment(int userId, int postId, String content) {
+    public boolean makeComment(int userId, int postId, String content) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -198,13 +198,13 @@ public class CommentDAO extends DAO implements CommentDAOInterface {
         try
         {
             con = getConnection();         
-            ps = con.prepareStatement("UPDATE post SET status = 0, content = '[deleted]', postContent = null WHERE postId = ?");
+            ps = con.prepareStatement("UPDATE comments SET active = 0, content = '[deleted]' WHERE commentID = ?");
             ps.setInt(1, commentID);
             ps.executeUpdate();
             System.out.println("Comment has been deleted.");
             flag = true;
         }catch (SQLException e) {
-            System.out.println("Exception occured in the deletePost() method: " + e.getMessage());
+            System.out.println("Exception occured in the deleteComment() method: " + e.getMessage());
         } finally {
             try {
                 if (rs != null) {
@@ -217,7 +217,7 @@ public class CommentDAO extends DAO implements CommentDAOInterface {
                     freeConnection(con);
                 }
             } catch (SQLException e) {
-                System.out.println("Exception occured in the finally section of the deletePost() method: " + e.getMessage());
+                System.out.println("Exception occured in the finally section of the deleteComment() method: " + e.getMessage());
             }
         }
         return flag;
@@ -232,7 +232,7 @@ public class CommentDAO extends DAO implements CommentDAOInterface {
         try
         {
             con = getConnection();         
-            ps = con.prepareStatement("UPDATE post SET content = ? WHERE commentID = ?");
+            ps = con.prepareStatement("UPDATE comments SET content = ? WHERE commentID = ?");
             ps.setString(1, content);
             ps.setInt(2, commentID);
             ps.executeUpdate();

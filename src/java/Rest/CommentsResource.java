@@ -162,7 +162,7 @@ public class CommentsResource {
                 if (!commentContent.isEmpty()) {
                     
                     CommentDAO db = new CommentDAO("projectdb");
-                    flag = db.makeCommment(userId, postID, commentContent);
+                    flag = db.makeComment(userId, postID, commentContent);
                 }
             }
         } catch (Exception e) {

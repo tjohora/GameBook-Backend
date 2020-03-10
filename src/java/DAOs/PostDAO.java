@@ -162,7 +162,6 @@ public class PostDAO extends DAO implements PostDAOInterface {
         boolean flag = false;
 
         try {
-            System.out.println("Test");
             con = getConnection();
 
             ps = con.prepareStatement("insert into posts (postID, userId, postHeader, postContent, postDate, media, active) values (null, ?, ?, ?, NOW(), ?, 1)");
