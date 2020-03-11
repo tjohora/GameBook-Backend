@@ -335,6 +335,7 @@ public class PostDAOTest {
         assertEquals(expResult, result);
     }
     
+    
     @Test
     public void updatePost_DetailsNotProvided_ReturnTrue() throws SQLException  {
         
