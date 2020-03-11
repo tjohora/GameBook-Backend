@@ -188,16 +188,12 @@ public class PostResource {
         return flag;
     }
 
-    /**
-     * PUT method for updating or creating an instance of PostResource
-     *
-     * @param content representation for the resource
-     */
     @PUT
-    @Path("/deletePost/{postId}")
+    @Path("/deletePost/{id}")
     @Consumes(MediaType.TEXT_PLAIN)
-    public boolean deletePost(@PathParam("postId") int postId) {
-        System.out.println("'DELETE' content = " + postId);
+    @Produces(MediaType.TEXT_PLAIN)
+    public boolean deletePost(@PathParam("id") int postId, String content) {
+        System.out.println("'DELETE' content = " + content);
         boolean flag = false;
         try {
                 PostDAO pDAO = new PostDAO("projectdb");
@@ -210,10 +206,11 @@ public class PostResource {
         return flag;
     }
 
-//    @POST
-//    @Path("/updatePost/{postDetails")
-//    @Consumes(MediaType.TEXT_PLAIN)
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public void updatePost(String content) {
-//    }
+    @PUT
+    @Path("/updatePost/{id}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public boolean updatePost(String content) {
+        throw new UnsupportedOperationException();
+    }
 }
