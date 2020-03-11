@@ -249,6 +249,25 @@ public class CommentDAOTest {
         boolean result = pd.makeComment(userId, postId, content);
         assertEquals(expResult, result);
     }
+    
+    @Test
+    public void makeComment_AllDetailsNotProvided_ReturnFalse() throws SQLException {
+
+        boolean expResult = false;
+        Connection dbConn = mock(Connection.class);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        ResultSet rs = mock(ResultSet.class);
+
+        when(dbConn.prepareStatement("insert into comments (userId, postID, commentId, content, commentDate, active) values (?, ?, null, ?, NOW(), 1)")).thenReturn(ps);
+
+        int userId = -1;
+        int postId = -1;
+        String content = null;
+
+        CommentDAO pd = new CommentDAO(dbConn);
+        boolean result = pd.makeComment(userId, postId, content);
+        assertEquals(expResult, result);
+    }
 //
 //    /**
 //     * Test of deleteComment method, of class CommentDAO.
@@ -263,10 +282,26 @@ public class CommentDAOTest {
 
         when(dbConn.prepareStatement("UPDATE comments SET active = 0, content = '[deleted]' WHERE commentID = ?")).thenReturn(ps);
 
-        int postId = 1;
+        int CommentId = 1;
 
         CommentDAO pd = new CommentDAO(dbConn);
-        boolean result = pd.deleteComment(postId);
+        boolean result = pd.deleteComment(CommentId);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void deleteComment_CommentIdNotProvided_returnFalse() throws SQLException {
+        boolean expResult = false;
+        Connection dbConn = mock(Connection.class);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        ResultSet rs = mock(ResultSet.class);
+
+        when(dbConn.prepareStatement("UPDATE comments SET active = 0, content = '[deleted]' WHERE commentID = ?")).thenReturn(ps);
+
+        int CommentId = -1;
+
+        CommentDAO pd = new CommentDAO(dbConn);
+        boolean result = pd.deleteComment(CommentId);
         assertEquals(expResult, result);
     }
 
@@ -274,7 +309,7 @@ public class CommentDAOTest {
 //     * Test of updateComment method, of class CommentDAO.
 //     */
     @Test
-    public void updateComment_CommentIdProvided_returnTrue() throws SQLException {
+    public void updateComment_DetailsProvided_returnTrue() throws SQLException {
         boolean expResult = true;
         Connection dbConn = mock(Connection.class);
         PreparedStatement ps = mock(PreparedStatement.class);
@@ -282,11 +317,28 @@ public class CommentDAOTest {
 
         when(dbConn.prepareStatement("UPDATE comments SET content = ? WHERE commentID = ?")).thenReturn(ps);
 
-        int postId = 1;
+        int CommentId = 1;
         String content = "NewContent";
 
         CommentDAO pd = new CommentDAO(dbConn);
-        boolean result = pd.updateComment(postId, content);
+        boolean result = pd.updateComment(CommentId, content);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void updateComment_DetailsNotProvided_returnFalse() throws SQLException {
+        boolean expResult = false;
+        Connection dbConn = mock(Connection.class);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        ResultSet rs = mock(ResultSet.class);
+
+        when(dbConn.prepareStatement("UPDATE comments SET content = ? WHERE commentID = ?")).thenReturn(ps);
+
+        int CommentId = -1;
+        String content = null;
+
+        CommentDAO pd = new CommentDAO(dbConn);
+        boolean result = pd.updateComment(CommentId, content);
         assertEquals(expResult, result);
     }
 

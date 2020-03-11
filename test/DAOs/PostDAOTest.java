@@ -215,7 +215,7 @@ public class PostDAOTest {
     }
     
     @Test
-    public void GetPostsByUser_UserIdDoesNotExists_ReturnEmptyArray() throws SQLException {
+    public void GetPostsByUser_UserIdDoesNotExist_ReturnEmptyArray() throws SQLException {
         ArrayList<Post> expectedResult = new ArrayList();
         
         //Create Mock objects
@@ -256,19 +256,19 @@ public class PostDAOTest {
     }
     
     @Test
-    public void makePost_MissingDetails_ReturnTrue() throws SQLException  {
+    public void makePost_MissingDetails_ReturnTFalse() throws SQLException  {
         
-        boolean expResult = true;
+        boolean expResult = false;
         Connection dbConn = mock(Connection.class);
         PreparedStatement ps = mock(PreparedStatement.class);
         ResultSet rs = mock(ResultSet.class);
         
         when(dbConn.prepareStatement("insert into posts (postID, userId, postHeader, postContent, postDate, media, active) values (null, ?, ?, ?, NOW(), ?, 1)")).thenReturn(ps);
 
-        int userId = 1;
+        int userId = -1;
         String postHeader = "";
-        String postContent = null;
-        int media = 1;
+        String postContent = "";
+        int media = -1;
         
         PostDAO pd = new PostDAO(dbConn); 
         boolean result = pd.makePost(userId, postHeader, postContent, media);
@@ -295,6 +295,23 @@ public class PostDAOTest {
         boolean result = pd.deletePost(postId);
         assertEquals(expResult, result);
     }
+    
+    @Test
+    public void DeletePost_PostIdNotProvided_ReturnFalse() throws SQLException {
+        
+        boolean expResult = false;
+        Connection dbConn = mock(Connection.class);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        ResultSet rs = mock(ResultSet.class);
+        
+        when(dbConn.prepareStatement("UPDATE post SET status = 0, postHeader = '[deleted]', postContent = '[deleted]' WHERE postId = ?")).thenReturn(ps);
+
+        int postId = -1;
+        
+        PostDAO pd = new PostDAO(dbConn); 
+        boolean result = pd.deletePost(postId);
+        assertEquals(expResult, result);
+    }
 
     /**
      * Test of updatePost method, of class PostDAO.
@@ -312,6 +329,25 @@ public class PostDAOTest {
         int postId = 1;
         String title = "newTitle";
         String content = "newContent";
+        
+        PostDAO pd = new PostDAO(dbConn); 
+        boolean result = pd.updatePost(postId, title, content);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void updatePost_DetailsNotProvided_ReturnTrue() throws SQLException  {
+        
+        boolean expResult = true;
+        Connection dbConn = mock(Connection.class);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        ResultSet rs = mock(ResultSet.class);
+        
+        when(dbConn.prepareStatement("UPDATE post SET content = ? WHERE postId = ?")).thenReturn(ps);
+
+        int postId = -1;
+        String title = null;
+        String content = null;
         
         PostDAO pd = new PostDAO(dbConn); 
         boolean result = pd.updatePost(postId, title, content);

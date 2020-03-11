@@ -173,19 +173,16 @@ public class CommentsResource {
         return flag;
     }
 
-    /**
-     * PUT method for updating or creating an instance of CommentsResource
-     * @param content representation for the resource
-     */
     @PUT
-    @Path("/deleteComment/{commentId}")
+    @Path("/deleteComment/{id}")
     @Consumes(MediaType.TEXT_PLAIN)
-    public boolean deleteComment(@PathParam("commentId") int commentId) {
-        System.out.println("'DELETE' content = " + commentId);
+    @Produces(MediaType.TEXT_PLAIN)
+    public boolean deleteComment(@PathParam("id") int commentID, String content) {
+        System.out.println("'DELETE' content = " + commentID);
         boolean flag = false;
         try {
                 CommentDAO cDAO = new CommentDAO("projectdb");
-                flag = cDAO.deleteComment(commentId);
+                flag = cDAO.deleteComment(commentID);
         } catch (Exception e) {
             System.out.println("Exception is Post DELETE : " + e.getMessage());
             // This exception sends error message to client
