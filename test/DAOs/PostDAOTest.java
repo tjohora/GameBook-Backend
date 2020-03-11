@@ -296,7 +296,6 @@ public class PostDAOTest {
         assertEquals(expResult, result);
     }
     
-    
     @Test
     public void DeletePost_PostIdNotProvided_ReturnFalse() throws SQLException {
         
