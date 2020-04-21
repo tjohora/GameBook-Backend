@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -159,5 +160,44 @@ public class UserDAO extends DAO implements UserDAOInterface {
         password_verified = BCrypt.checkpw(password_plaintext, stored_hash);
 
         return (password_verified);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<User> users = new ArrayList();
+        
+        try{
+            con = getConnection();
+            String query = "Select u.userId, u.userName, u.email, up.profileId, up.fname, up.lname, up.userType, up.address, up.dob, up.active from users u inner join userprofile up on u.userId = up.userId where active = 1"; 
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery(); 
+            
+            while(rs.next())
+            {
+                User u = new User(rs.getInt("userId"), rs.getInt("profileId"), rs.getString("username"), rs.getString("fname"), rs.getString("lname"), rs.getInt("userType"), rs.getInt("active"), rs.getString("email"), rs.getString("address"), rs.getString("dob"));
+                users.add(u);
+            }
+        }catch (SQLException e) {
+            System.out.println("Exception occured in the getAllUsers() method: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the getAllUsers() method: " + e.getMessage());
+            }
+        }
+        
+        return users;
     }
 }

@@ -64,8 +64,22 @@ public class UserResource {
         return jObj;
     }
     
+    private JSONObject convertUserToJson2(User u) {
+        JSONObject jObj = new JSONObject();
+        jObj.put("userId", u.getUserId());
+        jObj.put("profileId", u.getProfileId());
+        jObj.put("userName", u.getUsername());
+        jObj.put("fname", u.getFname());
+        jObj.put("lname", u.getLname());
+        jObj.put("userType", u.getUserType());
+        jObj.put("active", u.getActive());
+        jObj.put("email", u.getEmail());
+        jObj.put("address", u.getAddress());
+        jObj.put("dob", u.getDob());
+        return jObj;
+    }
     
-
+    
     /**
      * Retrieves representation of an instance of Rest.UserResource
      *
@@ -138,4 +152,30 @@ public class UserResource {
         }
         return flag;
     }
+    
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/getAllUsers")
+    public String getAllUsers(){
+        UserDAO userDB = new UserDAO("projectdb");
+        
+        System.out.println("GET called: getAllUsers");
+        
+        JSONArray array = new JSONArray();
+        try {
+            for (User u : userDB.getAllUsers()) {
+                JSONObject obj = convertUserToJson2(u);
+                array.add(obj);
+            }
+            JSONObject response = new JSONObject();
+            response.put("Users", array);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            // This exception sends error message to client
+            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
+        }
+
+        return array.toJSONString();
+    }
+    
 }
