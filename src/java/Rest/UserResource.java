@@ -178,4 +178,22 @@ public class UserResource {
         return array.toJSONString();
     }
     
+         @PUT
+    @Path("/deleteUser/{id}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public boolean deleteUser(@PathParam("id") int userId, String content) {
+        System.out.println("'DELETE' content = " + content);
+        boolean flag = false;
+        try {
+                UserDAO uDAO = new UserDAO("projectdb");
+                flag = uDAO.deleteUser(userId);
+        } catch (Exception e) {
+            System.out.println("Exception is Post DELETE : " + e.getMessage());
+            // This exception sends error message to client
+            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
+        }
+        return flag;
+    }
+    
 }
