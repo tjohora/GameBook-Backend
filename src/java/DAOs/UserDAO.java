@@ -200,4 +200,37 @@ public class UserDAO extends DAO implements UserDAOInterface {
         
         return users;
     }
+    
+    public boolean deleteUser(int userId) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean flag = false;       
+        try
+        {
+            con = getConnection();         
+            ps = con.prepareStatement("UPDATE userprofile SET active = 0 WHERE userId = ?");
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+            System.out.println("User has been deleted.");
+            flag = true;
+        }catch (SQLException e) {
+            System.out.println("Exception occured in the deletePost() method: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the final section of the deleteUser() method: " + e.getMessage());
+            }
+        }
+        return flag;
+    }
 }
