@@ -19,5 +19,6 @@ public interface CommentDAOInterface {
     public boolean makeComment(int userId, int postId, String content);
     public boolean deleteComment(int commentID);
     public boolean updateComment(int commentID, String content);
+    public List<Comment> getOneComment(int commentId);
     
 }

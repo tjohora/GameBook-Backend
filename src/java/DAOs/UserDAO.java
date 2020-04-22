@@ -208,8 +208,11 @@ public class UserDAO extends DAO implements UserDAOInterface {
         boolean flag = false;       
         try
         {
-            con = getConnection();         
-            ps = con.prepareStatement("UPDATE userprofile SET active = 0 WHERE userId = ?");
+            con = getConnection();
+            ps = con.prepareStatement("UPDATE users SET username='Deleted', email='Deleted', password='Deleted' WHERE userId = ?");
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+            ps = con.prepareStatement("UPDATE userprofile SET fname='Deleted', lname='Deleted', address='Deleted', dob='Deleted', active = 0 WHERE userId = ?");
             ps.setInt(1, userId);
             ps.executeUpdate();
             System.out.println("User has been deleted.");

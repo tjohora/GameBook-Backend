@@ -257,5 +257,10 @@ public class CommentDAO extends DAO implements CommentDAOInterface {
         }
         return flag;
     }
+
+    @Override
+    public List<Comment> getOneComment(int commentId) {
+        throw new UnsupportedOperationException("Nchangeot supported yet."); //To  body of generated methods, choose Tools | Templates.
+    }
     
 }

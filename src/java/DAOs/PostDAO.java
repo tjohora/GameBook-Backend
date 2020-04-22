@@ -228,7 +228,7 @@ public class PostDAO extends DAO implements PostDAOInterface {
     }
 
     @Override
-    public boolean updatePost(int postId, String title, String content) 
+    public boolean updatePost(int postId, String postHeader, String postContent) 
     {
         Connection con = null;
         PreparedStatement ps = null;
@@ -237,9 +237,10 @@ public class PostDAO extends DAO implements PostDAOInterface {
         try
         {
             con = getConnection();       
-            ps = con.prepareStatement("UPDATE posts SET content = ? WHERE postId = ?");
-            ps.setString(1, content);
-            ps.setInt(2, postId);
+            ps = con.prepareStatement("UPDATE posts SET postHeader = ?, postContent = ? WHERE postId = ?");
+            ps.setString(1, postHeader);
+            ps.setString(2, postContent);
+            ps.setInt(3, postId);
             ps.executeUpdate();
             System.out.println("Post has been updated.");
             flag = true;

@@ -192,9 +192,47 @@ public class CommentsResource {
     }
     
     @PUT
-    @Path("/updateComment")
+    @Path("/updateComment/{id}")
     @Consumes(MediaType.TEXT_PLAIN)
-    public boolean updateComment(String content) {
-        throw new UnsupportedOperationException();
+    public boolean updateComment(@PathParam("id") int commentID, String content) {
+        System.out.println("'UPDATE' content = " + content);
+        boolean flag = false;
+        try {
+            CommentDAO cDAO = new CommentDAO("projectdb");
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject) parser.parse(content);
+            String commentContent = (String) obj.get("content");
+            flag = cDAO.updateComment(commentID, commentContent);
+        } catch (Exception e) {
+            System.out.println("Exception in Comment UPDATE : " + e.getMessage());
+            // This exception sends error message to client
+            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
+        }
+        return flag;
+    }
+    
+    @GET
+    @Path("/oneComment/{commentId}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getOneComment(@PathParam("commentId") int commentId) {
+
+        CommentDAO cDAO = new CommentDAO("projectdb");
+
+        System.out.println("GET called: getOneComment");
+        JSONArray array = new JSONArray();
+        try {
+            for (Comment c : cDAO.getOneComment(commentId)) {
+                JSONObject obj = convertCommentToJson(c);
+                array.add(obj);
+            }
+            JSONObject response = new JSONObject();
+            response.put("Posts", array);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            // This exception sends error message to client
+            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
+        }
+
+        return array.toJSONString();
     }
 }

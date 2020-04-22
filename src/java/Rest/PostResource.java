@@ -107,7 +107,7 @@ public class PostResource {
     @Path("/onePost/{postId}")
     @Produces(MediaType.TEXT_PLAIN)
     public String getOnePost(@PathParam("postId") int postId) {
-        
+
         PostDAO postDB = new PostDAO("projectdb");
 
         System.out.println("GET called: getOnePosts");
@@ -136,16 +136,12 @@ public class PostResource {
 
         System.out.println("GET called: getPostsByUser");
         JSONArray array = new JSONArray();
-        try{
+        try {
             List<Post> posts = postDB.getPostsByUser(userId);
-            if (posts.isEmpty()) 
-            {               
+            if (posts.isEmpty()) {
                 return "{\"message\":\"No posts found\"}";
-            } 
-            else 
-            {
-                for (Post p : posts) 
-                {
+            } else {
+                for (Post p : posts) {
                     JSONObject obj = convertPostToJson(p);
                     array.add(obj);
                 }
@@ -196,8 +192,8 @@ public class PostResource {
         System.out.println("'DELETE' content = " + content);
         boolean flag = false;
         try {
-                PostDAO pDAO = new PostDAO("projectdb");
-                flag = pDAO.deletePost(postId);
+            PostDAO pDAO = new PostDAO("projectdb");
+            flag = pDAO.deletePost(postId);
         } catch (Exception e) {
             System.out.println("Exception is Post DELETE : " + e.getMessage());
             // This exception sends error message to client
@@ -210,7 +206,21 @@ public class PostResource {
     @Path("/updatePost/{id}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public boolean updatePost(String content) {
-        throw new UnsupportedOperationException();
+    public boolean updatePost(@PathParam("id") int postId, String content) {
+        System.out.println("'UPDATE' content = " + content);
+        boolean flag = false;
+        try {
+            PostDAO pDAO = new PostDAO("projectdb");
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject) parser.parse(content);
+            String postHeader = (String) obj.get("postHeader");
+            String postContent = (String) obj.get("postContent");
+            flag = pDAO.updatePost(postId, postHeader, postContent);
+        } catch (Exception e) {
+            System.out.println("Exception is Post DELETE : " + e.getMessage());
+            // This exception sends error message to client
+            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
+        }
+        return flag;
     }
 }
