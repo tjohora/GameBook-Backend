@@ -32,6 +32,7 @@ public class ApplicationConfig extends Application {
         resources.add(Rest.CommentsResource.class);
         resources.add(Rest.NewCrossOriginResourceSharingFilter.class);
         resources.add(Rest.PostResource.class);
+        resources.add(Rest.RatingResource.class);
         resources.add(Rest.UserResource.class);
     }
     
