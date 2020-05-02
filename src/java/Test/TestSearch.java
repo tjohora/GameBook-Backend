@@ -5,17 +5,17 @@
  */
 package Test;
 
-import Rest.RatingResource;
+import Rest.PostResource;
 
 /**
  *
  * @author TJ
  */
-public class RatingUpdateTest {
+public class TestSearch {
     public static void main(String[] args)
     {
-        String content = "{\"postID\":8,\"userID\":34,\"selectedRating\":0}";
-        RatingResource ur = new RatingResource();
-        System.out.println(ur.updateRating(content));
+        String content = "test";
+        PostResource ur = new PostResource();
+        System.out.println(ur.getPostBySearch(content));
     }
 }

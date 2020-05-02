@@ -223,4 +223,34 @@ public class PostResource {
         }
         return flag;
     }
+    
+    @GET
+    @Path("/getPostBySearch/{searchItem}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getPostBySearch(@PathParam("searchItem") String searchItem) {
+        PostDAO postDB = new PostDAO("projectdb");
+
+        System.out.println("GET called: getPostBySearch");
+        System.out.println(searchItem);
+        JSONArray array = new JSONArray();
+        try {
+            List<Post> posts = postDB.getPostsBySearch(searchItem);
+            if (posts.isEmpty()) {
+                return "{\"message\":\"No posts found\"}";
+            } else {
+                for (Post p : posts) {
+                    JSONObject obj = convertPostToJson(p);
+                    array.add(obj);
+                }
+            }
+            JSONObject response = new JSONObject();
+            response.put("Posts", array);
+        } catch (Exception e) {
+            System.out.println(e);
+            // This exception sends error message to client
+            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
+        }
+
+        return array.toJSONString();
+    }
 }

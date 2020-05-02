@@ -20,4 +20,5 @@ public interface PostDAOInterface
     public boolean makePost(int userId, String postHeader, String postContent, int media);
     public boolean deletePost(int postId);
     public boolean updatePost(int postId, String postHeader, String postContent);
+    public List<Post> getPostsBySearch(String searchResult);
 }

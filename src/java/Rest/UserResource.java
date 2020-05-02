@@ -63,7 +63,7 @@ public class UserResource {
         jObj.put("error", "");
         return jObj;
     }
-    
+
     private JSONObject convertUserToJson2(User u) {
         JSONObject jObj = new JSONObject();
         jObj.put("userId", u.getUserId());
@@ -78,8 +78,7 @@ public class UserResource {
         jObj.put("dob", u.getDob());
         return jObj;
     }
-    
-    
+
     /**
      * Retrieves representation of an instance of Rest.UserResource
      *
@@ -152,15 +151,15 @@ public class UserResource {
         }
         return flag;
     }
-    
+
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/getAllUsers")
-    public String getAllUsers(){
+    public String getAllUsers() {
         UserDAO userDB = new UserDAO("projectdb");
-        
+
         System.out.println("GET called: getAllUsers");
-        
+
         JSONArray array = new JSONArray();
         try {
             for (User u : userDB.getAllUsers()) {
@@ -177,8 +176,8 @@ public class UserResource {
 
         return array.toJSONString();
     }
-    
-         @PUT
+
+    @PUT
     @Path("/deleteUser/{id}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
@@ -186,8 +185,8 @@ public class UserResource {
         System.out.println("'DELETE' content = " + content);
         boolean flag = false;
         try {
-                UserDAO uDAO = new UserDAO("projectdb");
-                flag = uDAO.deleteUser(userId);
+            UserDAO uDAO = new UserDAO("projectdb");
+            flag = uDAO.deleteUser(userId);
         } catch (Exception e) {
             System.out.println("Exception is Post DELETE : " + e.getMessage());
             // This exception sends error message to client
@@ -195,5 +194,5 @@ public class UserResource {
         }
         return flag;
     }
-    
+
 }

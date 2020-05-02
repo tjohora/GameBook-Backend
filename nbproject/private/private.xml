@@ -17,6 +17,12 @@
             <file>file:/C:/Users/TJ/Documents/NetBeansProjects/Year3/Semester2/Year3Project/src/java/DAOs/UserDAOInterface.java</file>
             <file>file:/C:/Users/TJ/Documents/NetBeansProjects/Year3/Semester2/Year3Project/src/java/DTOs/User.java</file>
         </group>
-        <group name="FinalProject"/>
+        <group name="FinalProject">
+            <file>file:/C:/Users/TJ/Documents/NetBeansProjects/Year3/Semester2/Year3Project/src/java/DTOs/Rating.java</file>
+            <file>file:/C:/Users/TJ/Documents/NetBeansProjects/Year3/Semester2/Year3Project/src/java/Test/RatingUpdateTest.java</file>
+            <file>file:/C:/Users/TJ/Documents/NetBeansProjects/Year3/Semester2/Year3Project/src/java/DAOs/RatingDAO.java</file>
+            <file>file:/C:/Users/TJ/Documents/NetBeansProjects/Year3/Semester2/Year3Project/src/java/Rest/RatingResource.java</file>
+            <file>file:/C:/Users/TJ/Documents/NetBeansProjects/Year3/Semester2/Year3Project/src/java/DAOs/RatingDAOInterface.java</file>
+        </group>
     </open-files>
 </project-private>

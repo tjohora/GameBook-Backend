@@ -39,7 +39,7 @@ public class CommentDAO extends DAO implements CommentDAOInterface {
         try{
             con = getConnection();
 
-            String query = "Select u.userName, c.userId, c.postID, c.commentID, c.content, c.commentDate, c.active from comments c inner join users u on u.userId = c.userId where active = 1"; 
+            String query = "Select u.userName, c.userId, c.postID, c.commentID, c.content, c.commentDate, c.active from comments c inner join users u on u.userId = c.userId"; 
             ps = con.prepareStatement(query);
             rs = ps.executeQuery(); 
             

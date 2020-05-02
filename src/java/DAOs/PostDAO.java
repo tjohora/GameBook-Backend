@@ -263,4 +263,42 @@ public class PostDAO extends DAO implements PostDAOInterface {
         }
         return flag;
     }
+
+    @Override
+    public List<Post> getPostsBySearch(String searchResult) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Post> posts = new ArrayList();
+        
+        try{
+            con = getConnection();
+            ps = con.prepareStatement("Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active from posts p inner join users u on u.userId = p.userId where active = 1 AND LOWER(p.postHeader) LIKE LOWER(?) order by postId desc");
+            ps.setString(1, "%" + searchResult + "%");
+            rs = ps.executeQuery();
+            while(rs.next())
+            {
+                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
+                posts.add(p);
+            }
+        }catch (SQLException e) {
+            System.out.println("Exception occured in the getPostsBySearch() method: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the getPostsBySearch() method: " + e.getMessage());
+            }
+        }
+        
+        return posts;
+    }
 }

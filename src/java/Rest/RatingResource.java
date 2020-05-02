@@ -87,8 +87,8 @@ public class RatingResource {
         try {
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(content);
-            int userId = ((Long) obj.get("userId")).intValue();
-            int postId = ((Long) obj.get("postId")).intValue();
+            int userId = ((Long) obj.get("userID")).intValue();
+            int postId = ((Long) obj.get("postID")).intValue();
             int selectedRating = ((Long) obj.get("selectedRating")).intValue();
             RatingDAO rDAO = new RatingDAO("projectdb");
             flag = rDAO.updateRating(postId, userId, selectedRating);

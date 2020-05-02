@@ -171,7 +171,7 @@ public class UserDAO extends DAO implements UserDAOInterface {
         
         try{
             con = getConnection();
-            String query = "Select u.userId, u.userName, u.email, up.profileId, up.fname, up.lname, up.userType, up.address, up.dob, up.active from users u inner join userprofile up on u.userId = up.userId where active = 1"; 
+            String query = "Select u.userId, u.userName, u.email, up.profileId, up.fname, up.lname, up.userType, up.address, up.dob, up.active from users u inner join userprofile up on u.userId = up.userId"; 
             ps = con.prepareStatement(query);
             rs = ps.executeQuery(); 
             
