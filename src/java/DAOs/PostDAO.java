@@ -37,13 +37,13 @@ public class PostDAO extends DAO implements PostDAOInterface {
         
         try{
             con = getConnection();
-            String query = "Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active from posts p inner join users u on u.userId = p.userId where active = 1 order by postId desc"; 
+            String query = "Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active, p.flagged from posts p inner join users u on u.userId = p.userId where active = 1 order by postId desc"; 
             ps = con.prepareStatement(query);
             rs = ps.executeQuery(); 
             
             while(rs.next())
             {
-                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
+                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"), rs.getInt("flagged"));
                 posts.add(p);
             }
         }catch (SQLException e) {
@@ -79,14 +79,14 @@ public class PostDAO extends DAO implements PostDAOInterface {
             con = getConnection();
  
 
-            String query = "Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active from posts p inner join users u on u.userId = p.userId where active = 1 && postId = ?";
+            String query = "Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active, p.flagged from posts p inner join users u on u.userId = p.userId where active = 1 && postId = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, postId);
             rs = ps.executeQuery(); 
             
             while(rs.next())
             {
-                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
+                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"), rs.getInt("flagged"));
                 post.add(p);
             }
         }catch (SQLException e) {
@@ -129,7 +129,7 @@ public class PostDAO extends DAO implements PostDAOInterface {
             
             while(rs.next())
             {
-                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
+                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"), rs.getInt("flagged"));
                 posts.add(p);
             }
         }catch (SQLException e) {
@@ -278,7 +278,7 @@ public class PostDAO extends DAO implements PostDAOInterface {
             rs = ps.executeQuery();
             while(rs.next())
             {
-                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"));
+                Post p = new Post(rs.getInt("postId"), rs.getInt("userId"), rs.getString("userName"), rs.getString("postHeader"), rs.getString("postContent"), rs.getString("postDate"), rs.getString("media"), rs.getInt("active"), rs.getInt("flagged"));
                 posts.add(p);
             }
         }catch (SQLException e) {

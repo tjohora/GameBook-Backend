@@ -22,8 +22,8 @@ public class DAO {
         if (con == null) {
             String driver = "com.mysql.cj.jdbc.Driver";
             String url = "jdbc:mysql://localhost:3306/" + databaseName;
-            String username = "root2";
-            String password = "password";
+            String username = "root";
+            String password = "";
             Connection tempCon = null;
             try {
                 Class.forName(driver);

@@ -51,6 +51,7 @@ public class PostResource {
         jObj.put("postDate", p.getPostDate());
         jObj.put("media", p.getMedia());
         jObj.put("active", p.getActive());
+        jObj.put("active", p.getFlagged());
 
         return jObj;
     }
