@@ -20,8 +20,9 @@ public class Post {
     private String postDate;
     private String media;
     private int active;
+    private int flagged;
 
-    public Post(int postId, int userId, String userName, String postHeader, String postContent, String postDate, String media, int active) {
+    public Post(int postId, int userId, String userName, String postHeader, String postContent, String postDate, String media, int active, int flagged) {
         this.postId = postId;
         this.userId = userId;
         this.userName = userName;
@@ -30,6 +31,7 @@ public class Post {
         this.postDate = postDate;
         this.media = media;
         this.active = active;
+        this.flagged = flagged;
     }
 
     public Post() {
@@ -89,6 +91,14 @@ public class Post {
     }
 
     public void setActive(int active) {
+        this.active = active;
+    }
+    
+    public int getFlagged() {
+        return active;
+    }
+
+    public void setFlagged(int active) {
         this.active = active;
     }
 

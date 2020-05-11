@@ -51,9 +51,9 @@ public class PostDAOTest {
     public void getAllPosts_returnAllResults_getThreeReturns() throws SQLException
     {
         // Create expected results
-        Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1);
-        Post p2 = new Post(2, 11, "userName2" ,"MyTitle2", "PostHeader2", "11/1/2020", "This is media2", 1);
-        Post p3 = new Post(3, 12, "userName3" ,"MyTitle3", "PostHeader3", "11/1/2020", "This is media3", 1);
+        Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1, 0);
+        Post p2 = new Post(2, 11, "userName2" ,"MyTitle2", "PostHeader2", "11/1/2020", "This is media2", 1, 0);
+        Post p3 = new Post(3, 12, "userName3" ,"MyTitle3", "PostHeader3", "11/1/2020", "This is media3", 1, 0);
         ArrayList<Post> expectedResult = new ArrayList();
         expectedResult.add(p1);
         expectedResult.add(p2);
@@ -90,9 +90,9 @@ public class PostDAOTest {
     @Test
     public void getAllPosts_returnAllActiveResults_getTwoReturns() throws SQLException
     {
-        Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1);
-        Post p2 = new Post(2, 11, "userName2" ,"MyTitle2", "PostHeader2", "11/1/2020", "This is media2", 1);
-        Post p3 = new Post(3, 12, "userName3" ,"MyTitle3", "PostHeader3", "11/1/2020", "This is media3", 0);
+        Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1, 0);
+        Post p2 = new Post(2, 11, "userName2" ,"MyTitle2", "PostHeader2", "11/1/2020", "This is media2", 1, 0);
+        Post p3 = new Post(3, 12, "userName3" ,"MyTitle3", "PostHeader3", "11/1/2020", "This is media3", 0, 0);
         ArrayList<Post> expectedResult = new ArrayList();
         expectedResult.add(p1);
         expectedResult.add(p2);
@@ -130,7 +130,7 @@ public class PostDAOTest {
     @Test
     public void getOnePost_postIdExists_ReturnCorrectPost() throws SQLException
     {
-        Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1);
+        Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1, 0);
         ArrayList<Post> expectedResult = new ArrayList();
         expectedResult.add(p1);
         
@@ -188,7 +188,7 @@ public class PostDAOTest {
         System.out.println("getPostsByUser");
         
         int userId = -1;
-        Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1);
+        Post p1 = new Post(1, 10, "userName1" ,"MyTitle1", "PostHeader1", "11/1/2020", "This is media1", 1, 0);
         ArrayList<Post> expectedResult = new ArrayList();
         expectedResult.add(p1);
         
