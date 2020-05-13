@@ -99,7 +99,7 @@ public class UserResource {
             String password = (String) obj.get("password");
             System.out.println(userName + " " + password);
             if (userName != null && password != null) {
-                if (!userName.isEmpty() && !password.isEmpty() && password.length() >= 6 && password.length() <= 16) {;
+                if (!userName.isEmpty() && !password.isEmpty() && password.length() >= 6 && password.length() <= 30) {;
                     User u = uDAO.login(userName, password);
                     System.out.println(u.toString());
                     if (u.getUserType() == 0) {
@@ -140,7 +140,7 @@ public class UserResource {
             String email = ((String) obj.get("email"));
 
             if (userName != null && password != null && email != null) {
-                if (!userName.isEmpty() && !password.isEmpty() && !email.isEmpty() && password.length() >= 6 && password.length() <= 16) {
+                if (!userName.isEmpty() && !password.isEmpty() && !email.isEmpty() && password.length() >= 6 && password.length() <= 30) {
                     UserDAO db = new UserDAO("projectdb");
                     flag = db.register(userName, password, email);
                 }
@@ -186,8 +186,10 @@ public class UserResource {
         System.out.println("'DELETE' content = " + content);
         boolean flag = false;
         try {
-            UserDAO uDAO = new UserDAO("projectdb");
-            flag = uDAO.deleteUser(userId);
+            if (userId > 0) {
+                UserDAO uDAO = new UserDAO("projectdb");
+                flag = uDAO.deleteUser(userId);
+            }
         } catch (Exception e) {
             System.out.println("Exception is Post DELETE : " + e.getMessage());
             // This exception sends error message to client
@@ -195,7 +197,7 @@ public class UserResource {
         }
         return flag;
     }
-    
+
     @POST
     @Path("/editUser")
     @Consumes(MediaType.TEXT_PLAIN)

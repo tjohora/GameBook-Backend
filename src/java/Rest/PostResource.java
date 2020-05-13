@@ -114,12 +114,14 @@ public class PostResource {
         System.out.println("GET called: getOnePosts");
         JSONArray array = new JSONArray();
         try {
-            for (Post p : postDB.getOnePost(postId)) {
-                JSONObject obj = convertPostToJson(p);
-                array.add(obj);
+            if (postId > 0) {
+                for (Post p : postDB.getOnePost(postId)) {
+                    JSONObject obj = convertPostToJson(p);
+                    array.add(obj);
+                }
+                JSONObject response = new JSONObject();
+                response.put("Posts", array);
             }
-            JSONObject response = new JSONObject();
-            response.put("Posts", array);
         } catch (Exception e) {
             //e.printStackTrace();
             // This exception sends error message to client
@@ -138,17 +140,19 @@ public class PostResource {
         System.out.println("GET called: getPostsByUser");
         JSONArray array = new JSONArray();
         try {
-            List<Post> posts = postDB.getPostsByUser(userId);
-            if (posts.isEmpty()) {
-                return "{\"message\":\"No posts found\"}";
-            } else {
-                for (Post p : posts) {
-                    JSONObject obj = convertPostToJson(p);
-                    array.add(obj);
+            if (userId > 0) {
+                List<Post> posts = postDB.getPostsByUser(userId);
+                if (posts.isEmpty()) {
+                    return "{\"message\":\"No posts found\"}";
+                } else {
+                    for (Post p : posts) {
+                        JSONObject obj = convertPostToJson(p);
+                        array.add(obj);
+                    }
                 }
+                JSONObject response = new JSONObject();
+                response.put("Posts", array);
             }
-            JSONObject response = new JSONObject();
-            response.put("Posts", array);
         } catch (Exception e) {
             System.out.println(e);
             // This exception sends error message to client
@@ -172,7 +176,7 @@ public class PostResource {
             String postHeader = (String) obj.get("postHeader");
             String postContent = (String) obj.get("postContent");
             if (postHeader != null && postContent != null) {
-                if (!postHeader.isEmpty()) {
+                if (!postHeader.isEmpty() && userId > 0) {
                     PostDAO db = new PostDAO("projectdb");
                     flag = db.makePost(userId, postHeader, postContent, media);
                 }
@@ -193,8 +197,10 @@ public class PostResource {
         System.out.println("'DELETE' content = " + content);
         boolean flag = false;
         try {
-            PostDAO pDAO = new PostDAO("projectdb");
-            flag = pDAO.deletePost(postId);
+            if (postId > 0) {
+                PostDAO pDAO = new PostDAO("projectdb");
+                flag = pDAO.deletePost(postId);
+            }
         } catch (Exception e) {
             System.out.println("Exception is Post DELETE : " + e.getMessage());
             // This exception sends error message to client
@@ -216,7 +222,11 @@ public class PostResource {
             JSONObject obj = (JSONObject) parser.parse(content);
             String postHeader = (String) obj.get("postHeader");
             String postContent = (String) obj.get("postContent");
-            flag = pDAO.updatePost(postId, postHeader, postContent);
+            if (postHeader != null && postContent != null) {
+                if (!postHeader.isEmpty() && !postContent.isEmpty()) {
+                    flag = pDAO.updatePost(postId, postHeader, postContent);
+                }
+            }
         } catch (Exception e) {
             System.out.println("Exception is Post DELETE : " + e.getMessage());
             // This exception sends error message to client
@@ -224,7 +234,7 @@ public class PostResource {
         }
         return flag;
     }
-    
+
     @GET
     @Path("/getPostBySearch/{searchItem}")
     @Produces(MediaType.TEXT_PLAIN)
