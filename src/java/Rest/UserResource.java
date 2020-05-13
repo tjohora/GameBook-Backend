@@ -5,8 +5,14 @@
  */
 package Rest;
 
+import DAOs.ProfileDAO;
 import DAOs.UserDAO;
 import DTOs.User;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 
 import javax.ws.rs.core.Context;
@@ -19,6 +25,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import org.json.simple.*;
 import org.json.simple.parser.*;
@@ -233,6 +241,98 @@ public class UserResource {
             throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
         }
         return flag;
+    }
+    
+    @POST
+    @Path("/upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public String uploadFile(
+            @FormDataParam("image") InputStream uploadedInputStream,
+            @FormDataParam("image") FormDataContentDisposition fileDetail,
+            @FormDataParam("userId") String userId) {
+        ProfileDAO pDAO = new ProfileDAO();
+
+        String filePath = writeToFile(uploadedInputStream, fileDetail, userId);
+        int id = Integer.parseInt(userId);
+
+        pDAO.profilePic(filePath, id);
+
+        return "Success";
+    }
+
+    private String writeToFile(InputStream uploadInputStream, FormDataContentDisposition fileDetail, String userId) {
+
+        String uploadFileLocation = "c://Users//Tom/GroupProject/Gamebook-FrontEnd/src/assets/img/" + userId + "_" + fileDetail.getFileName();
+        
+        try {
+            OutputStream out = new FileOutputStream(new File(uploadFileLocation));
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            out = new FileOutputStream(new File(uploadFileLocation));
+            while ((read = uploadInputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return uploadFileLocation;
+
+    }
+
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/getUserDetails/{userId}")
+    public String getUserDetails(@PathParam("userId") int id) {
+        ProfileDAO pDAO = new ProfileDAO();
+
+        User u = pDAO.getUserDetails(id);
+        JSONObject obj = convertUserToJson2(u);
+        //return u.toString();
+        return obj.toJSONString();
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/friend/{userId}")
+    public String getFriendsList(@PathParam("userId") int userId) {
+        ProfileDAO pDAO = new ProfileDAO();
+        System.out.println("GET called: getFriendsList");
+
+        JSONArray array = new JSONArray();
+        try {
+            for (Integer u : pDAO.getFriends(userId)) {
+
+                array.add(u);
+            }
+
+        } catch (Exception e) {
+
+            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
+        }
+
+        return array.toJSONString();
+    }
+
+    @POST
+    @Path("/friend")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public boolean addFriend(
+            @FormDataParam("userId") String userId,
+            @FormDataParam("friendId") String friendId) {
+
+        ProfileDAO pDAO = new ProfileDAO();
+
+        int uId = Integer.parseInt(userId);
+        int fId = Integer.parseInt(friendId);
+
+        UserDAO uDAO = new UserDAO("projectdb");
+        
+
+        return uDAO.addFriend(uId, fId);
     }
 
 }

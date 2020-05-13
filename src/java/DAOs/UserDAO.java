@@ -281,4 +281,204 @@ public class UserDAO extends DAO implements UserDAOInterface {
 
         return flag;
     }
+    public int profilePic(String filePath, int userId) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean flag = false;
+        int check = 0;
+
+        try {
+
+            con = getConnection();
+
+            ps = con.prepareStatement("UPDATE userprofile SET profilePic = ? WHERE userId = ?");
+
+            ps.setString(1, filePath);
+            ps.setInt(2, userId);
+
+            ps.executeUpdate();
+
+            flag = true;
+            check = 1;
+
+        } catch (SQLException e) {
+            System.out.println("Exception occured in the profilepic method: " + e.getMessage());
+            flag = false;
+            check = 2;
+        } finally {
+            try {
+                if (rs != null) {
+
+                    rs.close();
+                }
+                if (ps != null) {
+
+                    ps.close();
+                }
+                if (con != null) {
+
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                flag = false;
+                check = 6;
+                System.out.println("Exception occured in the finally section of the login() method: " + e.getMessage());
+            }
+        }
+        //uiyguig
+
+        return check;
+    }
+
+    public String getUserDetails(int id) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String test = null;
+        User thisUser = null;
+
+        try {
+            con = getConnection();
+            ps = con.prepareStatement("SELECT * FROM userprofile WHERE userId = ?");
+
+            ps.setInt(1, id);
+
+            rs = ps.executeQuery();
+            test = rs.getString("fname");
+            //thisUser = new User(rs.getInt("userId"), rs.getInt("profileId"), rs.getString("username"), rs.getString("fname"), rs.getString("lname"), rs.getInt("userType"), rs.getInt("active"), rs.getString("email"), rs.getString("address"), rs.getString("dob"), rs.getString("profilePic"));
+
+        } catch (SQLException se) {
+            System.out.println("SQL Exception occurred: " + se.getMessage());
+            se.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Exception occurred: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+
+            freeConnection(con);
+        }
+
+        return test;
+
+    }
+
+    public String detailsTest(int userId) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String test = null;
+
+        try {
+
+            con = getConnection();
+            String query = "SELECT * FROM userprofile WHERE userId = ?";
+            ps = con.prepareStatement(query);
+
+            ps.setInt(1, userId);
+
+            rs = ps.executeQuery();
+            test = rs.getString("fname");
+
+        } catch (SQLException e) {
+            System.out.println("Exception occured in the editUser method: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the login() method: " + e.getMessage());
+            }
+        }
+
+        return test;
+    }
+
+    public boolean addFriend(int userId, int friendId) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String test = null;
+        boolean check = false;
+
+        try {
+
+            con = getConnection();
+            String query = "INSERT into friends(userId, friendId) values(?, ?)";
+            ps = con.prepareStatement(query);
+
+            ps.setInt(1, userId);
+            ps.setInt(2, friendId);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Exception occured in the editUser method: " + e.getMessage());
+            check = true;
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the login() method: " + e.getMessage());
+                check = true;
+            }
+        }
+
+        return check;
+    }
+
+    public int getFriends(int id) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Integer> ids = new ArrayList();
+        int count = 0;
+
+        try {
+            con = getConnection();
+            String query = "SELECT friendId FROM friends WHERE userId = ?";
+
+            ps.setInt(1, id);
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                count++;
+                ids.add(rs.getInt("friendId"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Exception occured in the getFriends() method: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the getFriends() method: " + e.getMessage());
+            }
+        }
+
+        return count;
+    }
 }

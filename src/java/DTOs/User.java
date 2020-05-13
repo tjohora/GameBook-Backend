@@ -22,20 +22,10 @@ public class User {
     private String email;
     private String address;
     private String dob;
+    private String profilePic;
     //private String joinDate;
 
-    public User(int userId, int profileId, String username, String fname, String lname, int userType, int active, String email, String address, String dob) {
-        this.userId = userId;
-        this.profileId = profileId;
-        this.username = username;
-        this.fname = fname;
-        this.lname = lname;
-        this.userType = userType;
-        this.active = active;
-        this.email = email;
-        this.address = address;
-        this.dob = dob;
-    }
+
 
     public User(int userId, String username, String email, int active, int userType) {
         this.userId = userId;
@@ -59,11 +49,52 @@ public class User {
         this.userType = userType;
         this.username = userName;
     }
+
+    public User(int userId, int profileId, String fname, String lname, int userType, int active, String address, String dob, String profilePic) {
+        this.userId = userId;
+        this.profileId = profileId;
+        this.fname = fname;
+        this.lname = lname;
+        this.userType = userType;
+        this.active = active;
+        this.address = address;
+        this.dob = dob;
+        this.profilePic = profilePic;
+    }
+
+    public User(int userId, int profileId, String username, String fname, String lname, int userType, int active, String email, String address, String dob) {
+        this.userId = userId;
+        this.profileId = profileId;
+        this.username = username;
+        this.fname = fname;
+        this.lname = lname;
+        this.userType = userType;
+        this.active = active;
+        this.email = email;
+        this.address = address;
+        this.dob = dob;
+    }
+    
+    
+    
+    public User(int userId, int profileId, String username, String fname, String lname, int userType, int active, String email, String address, String dob, String profilePic) {
+        this.userId = userId;
+        this.profileId = profileId;
+        this.username = username;
+        this.fname = fname;
+        this.lname = lname;
+        this.userType = userType;
+        this.active = active;
+        this.email = email;
+        this.address = address;
+        this.dob = dob;
+        this.profilePic = profilePic;
+    }
     
     public User() {
         
     }
-
+    
     public int getUserId() {
         return userId;
     }
@@ -143,6 +174,14 @@ public class User {
     public void setProfileId(int profileId) {
         this.profileId = profileId;
     }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
     
     
     
@@ -178,7 +217,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", username=" + username + ", fname=" + fname + ", lname=" + lname + ", userType=" + userType + ", active=" + active + ", email=" + email + ", address=" + address + ", dob=" + dob + '}';
+        return "User{" + "userId=" + userId + ", profileId=" + profileId + ", username=" + username + ", fname=" + fname + ", lname=" + lname + ", userType=" + userType + ", active=" + active + ", email=" + email + ", address=" + address + ", dob=" + dob + ", profilePic=" + profilePic + '}';
     }
-    
+
+   
 }
