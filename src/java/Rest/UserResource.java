@@ -7,6 +7,7 @@ package Rest;
 
 import DAOs.UserDAO;
 import DTOs.User;
+import java.text.SimpleDateFormat;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -189,6 +190,43 @@ public class UserResource {
             flag = uDAO.deleteUser(userId);
         } catch (Exception e) {
             System.out.println("Exception is Post DELETE : " + e.getMessage());
+            // This exception sends error message to client
+            throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
+        }
+        return flag;
+    }
+    
+    @POST
+    @Path("/editUser")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public boolean editUserDetails(String content) {
+        boolean flag = false;
+        System.out.println("POST content = " + content);
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject) parser.parse(content);
+
+            String dateStr = ((String) obj.get("dob"));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date myDob = sdf.parse(dateStr);
+            java.sql.Date dob = new java.sql.Date(myDob.getTime());
+
+            String fname = ((String) obj.get("fname"));
+            String lname = ((String) obj.get("lname"));
+            String address = ((String) obj.get("address"));
+
+            int userId = (((Long) obj.get("userId")).intValue());
+
+            if (fname != null && lname != null && address != null && dob != null) {
+                if (!fname.isEmpty() && !lname.isEmpty() && !address.isEmpty()) {
+                    UserDAO db = new UserDAO("projectdb");
+                    System.out.println(dob);
+                    flag = db.editUser(fname, lname, address, dob, userId);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Exception is User POST : " + e.getMessage());
             // This exception sends error message to client
             throw new javax.ws.rs.ServerErrorException(e.getMessage(), 500);
         }

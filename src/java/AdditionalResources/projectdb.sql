@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2020 at 07:44 PM
--- Server version: 10.4.6-MariaDB
--- PHP Version: 7.3.9
+-- Generation Time: May 11, 2020 at 06:19 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -42,53 +42,54 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`userId`, `postID`, `commentID`, `content`, `commentDate`, `active`) VALUES
-(28, 5, 5, 'This is a comment!', '2020-03-06', 1),
-(25, 5, 6, 'Hello world!', '2020-03-07', 1),
-(25, 7, 7, 'I crave chedder', '2020-03-07', 1),
-(25, 5, 8, 'Test content!', '2020-03-08', 1),
-(25, 5, 12, 'I made a comment!', '2020-03-08', 1),
-(25, 5, 13, 'Another comment', '2020-03-08', 1),
-(25, 11, 14, 'A comment', '2020-03-08', 1),
-(25, 13, 15, 'A comment', '2020-03-08', 1),
-(25, 13, 16, 'This is a comment', '2020-03-08', 1),
-(25, 14, 17, 'First!', '2020-03-08', 1),
-(25, 14, 18, 'Secind!', '2020-03-08', 1),
-(25, 14, 19, 'asldjsidjosj', '2020-03-08', 1),
-(25, 15, 20, '[deleted]', '2020-03-09', 0),
-(25, 15, 21, 'Anotehrt comment', '2020-03-09', 1),
-(25, 15, 22, 'dofhwfhwdsfh', '2020-03-09', 1),
-(25, 16, 23, 'Make a post!\n', '2020-03-09', 1),
-(31, 16, 24, '[deleted]', '2020-03-10', 0),
-(31, 16, 25, '[deleted]', '2020-03-10', 0),
-(31, 16, 26, '[deleted]', '2020-03-11', 0),
-(31, 16, 27, '[deleted]', '2020-03-11', 0),
-(31, 19, 28, '[deleted]', '2020-03-12', 0),
-(31, 15, 29, '[deleted]', '2020-03-12', 0),
-(31, 19, 30, '[deleted]', '2020-03-12', 0),
-(31, 20, 31, '[deleted]', '2020-03-12', 0),
-(31, 20, 32, '[deleted]', '2020-04-21', 0),
-(31, 20, 33, '[deleted]', '2020-04-21', 0),
-(31, 16, 34, '[deleted]', '2020-04-21', 0),
-(31, 16, 35, '[deleted]', '2020-04-21', 0),
-(31, 20, 36, '[deleted]', '2020-04-21', 0),
-(31, 20, 37, '[deleted]', '2020-04-21', 0),
-(31, 20, 38, '[deleted]', '2020-04-21', 0),
-(31, 14, 40, '[deleted]', '2020-04-22', 0),
-(31, 47, 41, 'qwe', '2020-04-22', 1),
-(31, 16, 42, 'sdw', '2020-04-22', 1),
-(31, 48, 43, 'wqe', '2020-04-22', 1),
-(31, 49, 44, 'ffddasf', '2020-04-22', 1),
-(31, 50, 45, 'rer', '2020-04-22', 1),
-(31, 52, 46, '[deleted]', '2020-04-22', 0),
-(31, 52, 47, '[deleted]', '2020-04-22', 0),
-(31, 52, 48, '[deleted]', '2020-04-22', 0),
-(31, 52, 49, 'fgdsgd', '2020-04-22', 1),
-(31, 52, 50, 'freger', '2020-04-22', 1),
-(33, 54, 51, 'tyyeryre', '2020-04-22', 1),
-(31, 54, 52, 'Did another Edit', '2020-04-22', 1),
-(31, 55, 53, 'sdfsdfsd', '2020-04-22', 1),
-(34, 56, 54, 'dddasdsadsaddasads', '2020-04-22', 1),
-(31, 57, 55, '[deleted]', '2020-04-23', 0);
+(53, 91, 1, 'Andrews comment on post!!!', '2020-05-10', 1),
+(53, 93, 2, 'Andrews comment on franks post', '2020-05-10', 1),
+(55, 93, 3, 'Nice post', '2020-05-11', 1),
+(53, 92, 4, 'Im commenting on my post!!!', '2020-05-11', 1),
+(53, 94, 5, 'Comment', '2020-05-11', 1),
+(53, 95, 6, '[deleted]', '2020-05-11', 0),
+(54, 92, 7, '[deleted]', '2020-05-11', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `flaggedcomment`
+--
+
+CREATE TABLE `flaggedcomment` (
+  `commentID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `flagComment` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `flaggedcomment`
+--
+
+INSERT INTO `flaggedcomment` (`commentID`, `userID`, `flagComment`) VALUES
+(4, 53, 1),
+(4, 56, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `flaggedpost`
+--
+
+CREATE TABLE `flaggedpost` (
+  `postID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `flagPost` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `flaggedpost`
+--
+
+INSERT INTO `flaggedpost` (`postID`, `userID`, `flagPost`) VALUES
+(92, 53, 1),
+(92, 54, 1),
+(92, 56, 1);
 
 -- --------------------------------------------------------
 
@@ -114,53 +115,20 @@ CREATE TABLE `posts` (
   `postContent` varchar(1000) DEFAULT NULL,
   `postDate` date DEFAULT NULL,
   `media` varchar(500) DEFAULT NULL,
-  `active` tinyint(4) DEFAULT 1
+  `active` tinyint(4) DEFAULT 1,
+  `flagged` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`postID`, `userId`, `postHeader`, `postContent`, `postDate`, `media`, `active`) VALUES
-(5, 25, 'First Post!', 'I made the first post!', '2020-03-06', NULL, 1),
-(7, 27, 'I like cheese', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2020-03-06', NULL, 1),
-(8, 26, 'Cool video!', 'https://www.youtube.com/watch?v=Yw6u6YkTgQ4', '2020-03-06', NULL, 1),
-(9, 25, 'I posted this', 'From the form', '2020-03-07', '1', 1),
-(10, 25, 'sfdsdfsd', 'sdfsdf', '2020-03-07', '1', 1),
-(11, 25, 'I made another Post', 'This is getting somewhere', '2020-03-07', '1', 1),
-(13, 25, 'One more test!', 'HIIHIHIHIHIHIH', '2020-03-08', '1', 1),
-(14, 25, 'Test post123123123123', 'Hi world!', '2020-03-08', '1', 1),
-(15, 25, 'dfsdgsdgsd', 'Post', '2020-03-09', '1', 1),
-(16, 25, '[deleted]', '[deleted]', '2020-03-09', '1', 0),
-(18, 31, '[deleted]', '[deleted]', '2020-03-10', '1', 0),
-(19, 31, '[deleted]', '[deleted]', '2020-03-12', '1', 0),
-(20, 31, '[deleted]', '[deleted]', '2020-03-12', '1', 0),
-(33, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(34, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(35, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(36, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(37, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(38, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(39, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(40, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(41, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(42, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(43, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(44, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(45, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(46, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(47, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(48, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(49, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(50, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(51, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(52, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(53, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(54, 33, 'Testsafsfdfsdgsdgsg', 'wfwfwfwefwef', '2020-04-22', '1', 1),
-(55, 31, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(56, 34, '[deleted]', '[deleted]', '2020-04-22', '1', 0),
-(57, 31, 'Testing sdsads\\da', 'Testing sdfsfs', '2020-04-23', '1', 1),
-(58, 34, 'fefgerg', 'ertertert', '2020-04-28', '1', 1);
+INSERT INTO `posts` (`postID`, `userId`, `postHeader`, `postContent`, `postDate`, `media`, `active`, `flagged`) VALUES
+(91, 53, '[deleted]', '[deleted]', '2020-05-10', '1', 0, 0),
+(92, 53, 'This is andrews 2nd Post!!!', '2nd Posts content', '2020-05-10', '1', 1, 0),
+(93, 54, 'Franks first Post', 'Franks post content', '2020-05-10', '1', 1, 0),
+(94, 53, 'Test post by andrew', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', '2020-05-11', '1', 1, 0),
+(95, 56, 'Simons Post', 'Simons Post content', '2020-05-11', '1', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -179,12 +147,13 @@ CREATE TABLE `rating` (
 --
 
 INSERT INTO `rating` (`postID`, `userID`, `selectedRating`) VALUES
-(7, 27, 1),
-(8, 26, 1),
-(8, 27, 1),
-(8, 34, 0),
-(9, 34, 1),
-(13, 27, 1);
+(91, 53, -1),
+(91, 54, 1),
+(92, 54, 1),
+(93, 53, 1),
+(93, 54, 1),
+(93, 55, 1),
+(94, 53, 1);
 
 -- --------------------------------------------------------
 
@@ -208,16 +177,10 @@ CREATE TABLE `userprofile` (
 --
 
 INSERT INTO `userprofile` (`userId`, `profileId`, `fname`, `lname`, `userType`, `address`, `dob`, `active`) VALUES
-(25, 23, NULL, NULL, 1, NULL, NULL, 1),
-(26, 24, NULL, NULL, 1, NULL, NULL, 1),
-(27, 25, NULL, NULL, 1, NULL, NULL, 0),
-(28, 26, NULL, NULL, 1, NULL, NULL, 1),
-(29, 27, NULL, NULL, 1, NULL, NULL, 1),
-(30, 28, NULL, NULL, 1, NULL, NULL, 1),
-(31, 29, 'John', 'Joe', 1, 'MainRoad', '1/1/2000', 1),
-(32, 30, NULL, NULL, 1, NULL, NULL, 0),
-(33, 31, 'Deleted', 'Deleted', 1, 'Deleted', 'Deleted', 0),
-(34, 32, NULL, NULL, 2, NULL, NULL, 1);
+(53, 1, 'Andrew', 'Fox', 2, 'Ireland', '1990-01-01', 1),
+(54, 2, 'Frank', 'Fox', 1, 'Louth', '1950-01-10', 1),
+(55, 3, NULL, NULL, 1, NULL, NULL, 1),
+(56, 4, NULL, NULL, 1, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -237,16 +200,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userId`, `userName`, `email`, `password`) VALUES
-(25, 'tjohora', 'test@gmail.com', '$2a$13$yWMuwes6MM8RVLe0QYJo6uRLHnCllPuItU7A8XHfgz61OAKTjO/zu'),
-(26, 'qweqwe', 'qweqwe@example.com', '$2a$13$mENFs/aEX/VKgPK0ogqjCORDo72y8w98iLv1TjSfBmFLAX16qN0rO'),
-(27, 'johnjoe123', 'johnJoe@gmail.com', '$2a$13$e6jDchzhnxX412t2.u3l6eZ0aQmrLgeJ9WP7ApAeYe3EX2hMc/D6e'),
-(28, 'UserTJ', 'test2@gmail.com', '$2a$13$vJQGAoCARoiV8ZOxvMCfeOGKdxqSKshksv2LW.mqS1vIcjdn7QiMq'),
-(29, 'FunnyName', 'Funny@example.com', '$2a$13$HREM2WVZOZmnPJX6SWTCx.oR0MajP4v2ZVN0/snaPpIvqqJos.nUG'),
-(30, 'JohnJoe111', 'Test123123@example.com', '$2a$13$Kpj7lZEUIq6YOuW6Z4iSLOi0HneUkzZLm8JVBR5IcXMb0Ord8FGt.'),
-(31, 'Auser', 'test123123123@gmail.com', '$2a$13$e5VzlYxFkTEdaihhuZIJ5eAX4N6i/COlfSduWz.yCZJotxMJhITHa'),
-(32, 'AUsertest123123', 'wdfwd@test.com', '$2a$13$kVNFkk/bALW91sz6qB/ZfOyPIOWmo2T3jo/Tm9fheiWSaNNUSzfiW'),
-(33, 'Deleted', 'Deleted', 'Deleted'),
-(34, 'Admin', 'Admin@Test.ie', '$2a$13$HBssZ/PQ9sQ9sIWwNqP35udVY7v6yl91yKJ4RMtSEYO2Y2uMK24FS');
+(53, 'Andrew ', 'Andrew@test.com', '$2a$13$plbnBLKM6oHa9sK8nbPOkOhDEltt0mfTCx8I.b4/RCGeHKVRehmNq'),
+(54, 'Frank', 'frank@test.com', '$2a$13$yDAWsTfeSurBcY0bgbIGHeuYRipK5yLn5XlzjiVttdH1.1JfsaV.u'),
+(55, 'UserTest', 'user@email.com', '$2a$13$J7xEX6KMKZlFagja/oyKVeKDoerX0eUNhng6hvwM/HXIOaFO09LXK'),
+(56, 'Simon', 'simon@test.com', '$2a$13$HEX3RZhL9L35QaeGShXKFu1sfNqO.UaKfrP5uyzVenkos2w5lPc/m');
 
 --
 -- Indexes for dumped tables
@@ -259,6 +216,22 @@ ALTER TABLE `comments`
   ADD PRIMARY KEY (`commentID`),
   ADD KEY `userId` (`userId`),
   ADD KEY `postID` (`postID`);
+
+--
+-- Indexes for table `flaggedcomment`
+--
+ALTER TABLE `flaggedcomment`
+  ADD PRIMARY KEY (`commentID`,`userID`),
+  ADD UNIQUE KEY `unique_index` (`commentID`,`userID`),
+  ADD KEY `userID` (`userID`);
+
+--
+-- Indexes for table `flaggedpost`
+--
+ALTER TABLE `flaggedpost`
+  ADD PRIMARY KEY (`postID`,`userID`),
+  ADD UNIQUE KEY `unique_index` (`postID`,`userID`),
+  ADD KEY `userID` (`userID`);
 
 --
 -- Indexes for table `friends`
@@ -303,25 +276,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `postID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `postID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT for table `userprofile`
 --
 ALTER TABLE `userprofile`
-  MODIFY `profileId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `profileId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- Constraints for dumped tables
@@ -333,6 +306,20 @@ ALTER TABLE `users`
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`),
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`postID`) REFERENCES `posts` (`postID`);
+
+--
+-- Constraints for table `flaggedcomment`
+--
+ALTER TABLE `flaggedcomment`
+  ADD CONSTRAINT `flaggedC_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userId`),
+  ADD CONSTRAINT `flaggedC_ibfk_2` FOREIGN KEY (`commentID`) REFERENCES `comments` (`commentID`);
+
+--
+-- Constraints for table `flaggedpost`
+--
+ALTER TABLE `flaggedpost`
+  ADD CONSTRAINT `flaggedP_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userId`),
+  ADD CONSTRAINT `flaggedP_ibfk_2` FOREIGN KEY (`postID`) REFERENCES `posts` (`postID`);
 
 --
 -- Constraints for table `friends`

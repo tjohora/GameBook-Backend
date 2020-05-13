@@ -273,7 +273,7 @@ public class PostDAO extends DAO implements PostDAOInterface {
         
         try{
             con = getConnection();
-            ps = con.prepareStatement("Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active from posts p inner join users u on u.userId = p.userId where active = 1 AND LOWER(p.postHeader) LIKE LOWER(?) order by postId desc");
+            ps = con.prepareStatement("Select u.userName, p.postID, p.userID, p.postHeader, p.postContent, p.postDate, p.media, p.active, p.flagged from posts p inner join users u on u.userId = p.userId where active = 1 AND LOWER(p.postHeader) LIKE LOWER(?) order by postId desc");
             ps.setString(1, "%" + searchResult + "%");
             rs = ps.executeQuery();
             while(rs.next())

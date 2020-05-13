@@ -14,7 +14,7 @@ import Rest.PostResource;
 public class TestSearch {
     public static void main(String[] args)
     {
-        String content = "test";
+        String content = "t";
         PostResource ur = new PostResource();
         System.out.println(ur.getPostBySearch(content));
     }

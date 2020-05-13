@@ -30,6 +30,8 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(Rest.CommentsResource.class);
+        resources.add(Rest.FlaggedCommentResource.class);
+        resources.add(Rest.FlaggedPostResource.class);
         resources.add(Rest.NewCrossOriginResourceSharingFilter.class);
         resources.add(Rest.PostResource.class);
         resources.add(Rest.RatingResource.class);

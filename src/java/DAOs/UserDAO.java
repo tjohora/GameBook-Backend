@@ -7,6 +7,7 @@ package DAOs;
 
 import DTOs.User;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -234,6 +235,50 @@ public class UserDAO extends DAO implements UserDAOInterface {
                 System.out.println("Exception occured in the final section of the deleteUser() method: " + e.getMessage());
             }
         }
+        return flag;
+    }
+    
+    public boolean editUser(String fname, String lname, String address, Date dob, int userId) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean flag = false;
+        System.out.println(dob);
+        try {
+
+            con = getConnection();
+
+            ps = con.prepareStatement("UPDATE userprofile SET fname = ?, lname = ?, address = ?, dob = ? WHERE userId = ?");
+
+            ps.setString(1, fname);
+            ps.setString(2, lname);
+            ps.setString(3, address);
+            ps.setDate(4, dob);
+            ps.setInt(5, userId);
+
+            ps.executeUpdate();
+
+            flag = true;
+
+        } catch (SQLException e) {
+            System.out.println("Exception occured in the editUser method: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    freeConnection(con);
+                }
+            } catch (SQLException e) {
+                System.out.println("Exception occured in the finally section of the login() method: " + e.getMessage());
+            }
+        }
+        //uiyguig
+
         return flag;
     }
 }
